@@ -78,126 +78,84 @@
 
 // export default Theaters;
 
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setTheaters, setLoading, setError } from "../Redux/Slices/theatersSlice.js";
+import UseApiFetch from "../API-Method/UseApiFetch";
+import "../Styles/Theaters.css";
 
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import UseApiFetch from '../API-Method/UseApiFetch';
-import '../Styles/Theaters.css';
-
-const TheaterDetails = () => {
-  const { id } = useParams(); // Get theater ID from URL
-  const [theater, setTheater] = useState(null);
-  const [screens, setScreens] = useState([]);
+const Theaters = () => {
   const [startInit, setStartInit] = useState(true);
-  const [currentApi, setCurrentApi] = useState(null);
-
   const { isLoading, serverRequest, apiKey, responseData, fetchError } = UseApiFetch();
+  const dispatch = useDispatch();
+  const { theaters, loading, error } = useSelector((state) => state.theaters);
 
-  // Function to fetch theater details
-  const fetchTheaterDetails = () => {
+  const GetTheaters = () => {
     const requestConfig = {
-      method: 'GET',
-      apiUrl: `/api/theaters/${id}`,
-      apiKey: 'GET_THEATER_DETAILS',
+      method: "GET",
+      apiUrl: "/api/theaters",
+      apiKey: "GETTHEATERS",
     };
+    dispatch(setLoading());
     serverRequest(requestConfig);
-    setCurrentApi('THEATER');
   };
 
-  // Function to fetch screens for the theater
-  const fetchScreens = () => {
-    const requestConfig = {
-      method: 'GET',
-      apiUrl: `/api/screens/theater/${id}`,
-      apiKey: 'GET_SCREENS',
-    };
-    serverRequest(requestConfig);
-    setCurrentApi('SCREENS');
-  };
-
-  // Handle API responses
-  const handleApiResponse = () => {
-    if (!isLoading && responseData && !fetchError) {
-      if (apiKey === 'GET_THEATER_DETAILS' && currentApi === 'THEATER') {
-        setTheater(responseData.data);
-        // After fetching theater, fetch screens
-        fetchScreens();
-      } else if (apiKey === 'GET_SCREENS' && currentApi === 'SCREENS') {
-        setScreens(responseData.data);
-      }
+  const fnResponseForGetTheaters = () => {
+    if (responseData?.data) {
+      dispatch(setTheaters(responseData.data));
+    } else {
+      dispatch(setError("Invalid theater data"));
     }
   };
 
   useEffect(() => {
     if (startInit) {
-      fetchTheaterDetails();
+      GetTheaters();
       setStartInit(false);
-    } else {
-      handleApiResponse();
+    } else if (!isLoading && apiKey === "GETTHEATERS") {
+      fnResponseForGetTheaters();
     }
-  }, [isLoading, apiKey, responseData, fetchError]);
-
-  if (isLoading) {
-    return <div className="loading">Loading...</div>;
-  }
-
-  if (fetchError) {
-    return <div className="error">{fetchError}</div>;
-  }
-
-  if (!theater) {
-    return <div className="error">Theater not found.</div>;
-  }
+  }, [startInit, isLoading, apiKey, responseData,fetchError]);
 
   return (
     <div className="theater-details-page">
-      <h1 className="theater-details-title">{theater.name}</h1>
-      <div className="theater-details-container">
-        <img
-          src={theater.image}
-          alt={theater.name}
-          className="theater-details-image"
-        />
-        <div className="theater-info">
-          <p className="theater-address">
-            <strong>Address:</strong> {theater.address}, {theater.city}
-          </p>
-          {theater.showtimes && theater.showtimes.length > 0 && (
-            <p className="theater-showtimes">
-              <strong>Showtimes:</strong>{' '}
-              {theater.showtimes.map((showtime) => (
-                <span key={showtime._id}>
-                  {showtime.movieId?.title || 'Unknown Movie'} at{' '}
-                  {new Date(showtime.startTime).toLocaleString()}
-                  <br />
-                </span>
-              ))}
-            </p>
-          )}
-          <a href={`/showtimes/${theater._id}`} className="showtimes-btn">
-            View Showtimes
-          </a>
-        </div>
-      </div>
-
-      <h2 className="screens-title">Available Screens</h2>
-      {screens.length === 0 ? (
-        <p className="no-screens">No screens found for this theater.</p>
-      ) : (
-        <div className="screens-grid">
-          {screens.map((screen) => (
-            <div key={screen._id} className="screen-card">
-              <div className="screen-info">
-                <h3 className="screen-number">Screen {screen.screenNumber}</h3>
-                <p className="screen-seats">
-                  <strong>Total Seats:</strong> {screen.totalSeats}
+      {loading && <p className="loading">Loading theaters...</p>}
+      {error && <p className="error">Error: {error}</p>}
+      {!loading && !error && theaters?.length === 0 && (
+        <h1 className="no-screens">No theaters are available</h1>
+      )}
+      {!loading && !error && theaters?.length > 0 && (
+        <div className="theaters-grid">
+          {theaters.map((theater) => (
+            <div key={theater?._id} className="theater-card">
+              <img
+                src={theater?.image || "https://via.placeholder.com/400"}
+                alt={theater?.name}
+                className="theater-card-image"
+              />
+              <div className="theater-card-content">
+                <h2 className="theater-card-title">{theater?.name}</h2>
+                <p className="theater-card-address">
+                  <strong>Address:</strong> {theater?.address}, {theater?.city}
                 </p>
-                <p className="screen-layout">
-                  <strong>Seat Layout:</strong>{' '}
-                  {screen.seatLayout
-                    .map((seat) => `${seat.seatNumber} (${seat.status})`)
-                    .join(', ')}
-                </p>
+                <div className="theater-card-showtimes">
+                  <strong>Showtimes:</strong>
+                  {theater?.showtimes && theater.showtimes.length > 0 ? (
+                    <select className="showtimes-dropdown">
+                      <option value="" disabled selected>
+                        Select a showtime
+                      </option>
+                      {theater.showtimes.map((showtime) => (
+                        <option key={showtime._id} value={showtime._id}>
+                          {showtime.movieId?.title || "Unknown Movie"} at{" "}
+                          {new Date(showtime.startTime).toLocaleString()}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <p className="no-screens">No showtimes available</p>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -207,4 +165,4 @@ const TheaterDetails = () => {
   );
 };
 
-export default TheaterDetails;
+export default Theaters;

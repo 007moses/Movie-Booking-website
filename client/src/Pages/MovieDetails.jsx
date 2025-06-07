@@ -1,80 +1,88 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
-import '../Styles/MovieDetails.css';
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import UseApiFetch from "../API-Method/UseApiFetch";
+import "../Styles/MovieDetails.css";
 
 const MovieDetails = () => {
-  const { id } = useParams();
-  const [movie, setMovie] = useState(null);
-  const [theaters, setTheaters] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [moviesData, setMoviesData] = useState([]);
+  const [startInit, setStartInit] = useState(true);
+  const { apiKey, serverRequest, fetchError, responseData, isLoading } = UseApiFetch();
+  const theaters = useSelector((state) => state.theaters.theaters); // Get theaters from Redux
+  const params = useParams();
 
-  // Fetch movie details and theaters with showtimes
-  useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        const movieResponse = await axios.get(`http://localhost:5000/api/movies/${id}`);
-        setMovie(movieResponse.data);
-
-        // Fetch theaters with sample showtimes for this movie
-        const theatersResponse = await axios.get(`http://localhost:5000/api/theaters?movieId=${id}`);
-        setTheaters(theatersResponse.data);
-        setLoading(false);
-      } catch (err) {
-        setError(err.response?.data?.message || 'Failed to load movie details.');
-        setLoading(false);
-      }
+  const GetMovies = () => {
+    const requestConfig = {
+      method: "GET",
+      apiUrl: "/api/movies",
+      apiKey: "GETMOVIES",
     };
-    fetchMovieDetails();
-  }, [id]);
+    serverRequest(requestConfig);
+  };
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
+  const fnResponseForGetMovies = () => {
+    if (Array.isArray(responseData)) {
+      setMoviesData(responseData);
+    } else {
+      console.error("Invalid movie data:", responseData);
+      setMoviesData([]);
+    }
+  };
 
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
+  useEffect(() => {
+    if (startInit) {
+      GetMovies();
+      setStartInit(false);
+    } else if (!isLoading && apiKey === "GETMOVIES") {
+      fnResponseForGetMovies();
+    }
+  }, [startInit, isLoading, apiKey, responseData, fetchError]);
 
+  const movie = moviesData?.find((eachMovie) => eachMovie?.title.split(" ").join("-") === params.title);
+  console.log(movie,"movie")
   return (
     <div className="movie-details-page">
-      <h1 className="movie-details-title">{movie.title}</h1>
+      <h1 className="movie-details-title">{movie?.title}</h1>
       <div className="movie-details-container">
         <div className="movie-poster-section">
-          <img src={movie.poster} alt={movie.title} className="movie-poster" />
+          <img src={movie?.poster} alt={movie?.title} className="movie-poster" />
         </div>
         <div className="movie-info-section">
-          <p className="movie-info"><strong>Genre:</strong> {movie.genre}</p>
-          <p className="movie-info"><strong>Duration:</strong> {movie.duration}</p>
-          <p className="movie-info"><strong>Rating:</strong> {movie.rating}</p>
-          <p className="movie-synopsis">
-            <strong>Synopsis:</strong> {movie.synopsis || 'A thrilling cinematic experience awaits!'}
+          <p className="movie-info">
+            <strong>Genre:</strong> {movie?.genre}
+          </p>
+          <p className="movie-info">
+            <strong>Duration:</strong> {movie?.duration}
+          </p>
+          <p className="movie-info">
+            <strong>Rating:</strong> {movie?.rating}
           </p>
           <p className="movie-cast">
-            <strong>Cast:</strong> {movie.cast?.join(', ') || 'To be announced'}
+            <strong>Cast:</strong> {movie?.cast?.join(", ") || "To be announced"}
           </p>
         </div>
       </div>
       <h2 className="showtimes-title">Available Showtimes</h2>
-      {theaters.length === 0 ? (
+      {theaters?.length === 0 ? (
         <p className="no-showtimes">No showtimes available for this movie.</p>
       ) : (
         <div className="theaters-grid">
-          {theaters.map((theater) => (
-            <div key={theater.id} className="theater-card">
-              <h3 className="theater-name">{theater.name}</h3>
-              <p className="theater-address">{theater.address}</p>
+          {theaters?.map((theater) => (
+            <div key={theater?._id} className="theater-card">
+              <h3 className="theater-name">{theater?.name}</h3>
+              <p className="theater-address">{theater?.address}</p>
               <div className="showtimes-list">
-                {theater.showtimes.map((showtime, index) => (
-                  <Link
-                    key={index}
-                    to={`/booking/${movie.id}/${theater.id}/${encodeURIComponent(showtime)}`}
-                    className="showtime-btn"
-                  >
-                    {showtime}
-                  </Link>
-                ))}
+                {theater?.showtimes
+                  .filter((showtime) => showtime.movieId?.title === movie?.title)
+                  .map((showtime, index) => (
+                    <Link
+                      key={index}
+                      to={`/booking/${movie?._id}/${theater?._id}/${encodeURIComponent(showtime.startTime)}`}
+                      className="showtime-btn"
+                    >
+                      {new Date(showtime.startTime).toLocaleString()}
+                    </Link>
+                  ))}
               </div>
             </div>
           ))}
@@ -85,4 +93,3 @@ const MovieDetails = () => {
 };
 
 export default MovieDetails;
-

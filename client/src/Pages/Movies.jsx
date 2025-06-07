@@ -25,12 +25,12 @@ const Movies = () => {
   const [startInit, setStartInit] = useState(true);
   // const [wishlist, setWishlist] = useState(new Set());
   // const [hoveredIcons, setHoveredIcons] = useState(new Set());
-  const [ProductData, setProductData] = useState([]);
+  const [MoviesData, setMoviesData] = useState([]);
   // const [quantities, setQuantities] = useState({});
   const navigate = useNavigate()
 
 
-  const ProductItems = () => {
+  const GetMovies = () => {
     const requestConfig = {
       method: "GET",
       apiUrl: "/api/movies",
@@ -40,26 +40,26 @@ const Movies = () => {
     setStartInit(false);
   };
 
-  const fnResponseForProductItems = () => {
+  const fnResponseForGetMovies = () => {
     setReRender(!reRender);
     if (Array.isArray(responseData)) {
-      setProductData(responseData);
+      setMoviesData(responseData);
     } else {
       console.error("Invalid product data:", responseData);
-      setProductData([]);
+      setMoviesData([]);
     }
   };
 
-  console.log(ProductData,"MoviesData")
+  console.log(MoviesData,"MoviesData")
 
   useEffect(() => {
     if (startInit) {
-      ProductItems();
+      GetMovies();
     } else {
       if (!isLoading && apiKey) {
         switch (apiKey) {
           case "GETMOVIES":
-            fnResponseForProductItems();
+            fnResponseForGetMovies();
             break;
           // case "ADDTOCART":
           //   fnResponseForAddCart();
@@ -86,7 +86,7 @@ const Movies = () => {
     <div className="movies-page">
       <h1 className="movies-title">Now Showing</h1>
       <div className="movies-grid">
-        {ProductData?.map((movie) => (
+        {MoviesData?.map((movie) => (
           <div key={movie.id} className="movie-card">
             <img
               src={movie?.poster}

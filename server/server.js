@@ -28,7 +28,7 @@ app.use('/api/movies', MoviesRouter);
 app.use('/api/auth', authRouter);
 // app.use('/api/bookings', bookingRouter);
 // app.use('/api/screens', ScreensRouter);
-// app.use('/api/theaters', theaterRouter);
+app.use('/api/theaters', theaterRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

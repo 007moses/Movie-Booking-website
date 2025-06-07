@@ -13,56 +13,38 @@
         "ticketPrice": 10.0
       },
       {
-        "movieId": "683abef087d5c91796293e3f",
+        "movieId": "683abedf87d5c91796293e3d",
         "screenNumber": 1,
         "showDateTime": "2025-06-01T12:00:00.000Z",
         "format": "2D",
         "ticketPrice": 10.0
       },
       {
-        "movieId": "683abefc87d5c91796293e41",
+        "movieId": "683abef087d5c91796293e3f",
         "screenNumber": 1,
         "showDateTime": "2025-06-01T15:00:00.000Z",
         "format": "3D",
         "ticketPrice": 12.0
       },
-      {
-        "movieId": "683abefc87d5c91796293e41",
-        "screenNumber": 1,
-        "showDateTime": "2025-06-01T18:00:00.000Z",
-        "format": "3D",
-        "ticketPrice": 12.0
-      },
-      {
-        "movieId": "683abf3c0e394d1cfc345f91",
-        "screenNumber": 1,
-        "showDateTime": "2025-06-01T21:00:00.000Z",
-        "format": "IMAX",
-        "ticketPrice": 15.0
-      },
+
+      
+
       {
         "movieId": "683abf520e394d1cfc345f93",
-        "screenNumber": 2,
-        "showDateTime": "2025-06-01T10:00:00.000Z",
-        "format": "IMAX",
-        "ticketPrice": 15.0
-      },
-      {
-        "movieId": "683abf5e0e394d1cfc345f95",
         "screenNumber": 2,
         "showDateTime": "2025-06-01T13:00:00.000Z",
         "format": "2D",
         "ticketPrice": 10.0
       },
       {
-        "movieId": "683abf690e394d1cfc345f97",
+        "movieId": "683abf5e0e394d1cfc345f95",
         "screenNumber": 2,
         "showDateTime": "2025-06-01T16:00:00.000Z",
         "format": "3D",
         "ticketPrice": 12.0
       },
       {
-        "movieId": "683abf730e394d1cfc345f99",
+        "movieId": "683abf690e394d1cfc345f97",
         "screenNumber": 2,
         "showDateTime": "2025-06-01T19:00:00.000Z",
         "format": "IMAX",
@@ -71,5 +53,36 @@
     ],
     "createdAt": "2025-05-31T10:00:00.000Z",
     "updatedAt": "2025-05-31T10:00:00.000Z"
-  }
+  },
+  {
+  "name": "Galaxy Cinemas",
+  "address": "123 Main Street, Downtown",
+  "city": "Chennai",
+  "image": "https://example.com/images/theater1.jpg",
+  "showtimes": [
+    {
+      "movieId": "683abefc87d5c91796293e41",
+      "screenNumber": 1,
+      "showDateTime": "2025-06-01T18:00:00.000Z",  
+      "format": "3D",
+      "ticketPrice": 12.0
+    },
+    {
+      "movieId": "683abf0987d5c91796293e43",
+      "screenNumber": 1,
+      "showDateTime": "2025-06-01T14:30:00.000Z",  
+      "format": "IMAX",
+      "ticketPrice": 15.0
+    },
+    {
+      "movieId": "683abf3c0e394d1cfc345f91",
+      "screenNumber": 2,
+      "showDateTime": "2025-06-01T10:00:00.000Z",  
+      "format": "IMAX",
+      "ticketPrice": 15.0
+    }
+  ]
+}
+
+
 ]
