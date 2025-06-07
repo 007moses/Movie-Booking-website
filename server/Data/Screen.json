@@ -1,0 +1,72 @@
+[
+  {
+    "_id": "507f1f77bcf86cd799439017",
+    "theaterId": "507f1f77bcf86cd799439016",
+    "screenNumber": 1,
+    "totalSeats": 6,
+    "seatLayout": [
+      {
+        "seatNumber": "A1",
+        "seatType": "STANDARD",
+        "isAvailable": true
+      },
+      {
+        "seatNumber": "A2",
+        "seatType": "STANDARD",
+        "isAvailable": true
+      },
+      {
+        "seatNumber": "B1",
+        "seatType": "PREMIUM",
+        "isAvailable": true
+      },
+      {
+        "seatNumber": "B2",
+        "seatType": "PREMIUM",
+        "isAvailable": false // Booked in Booking data
+      },
+      {
+        "seatNumber": "C1",
+        "seatType": "VIP",
+        "isAvailable": true
+      },
+      {
+        "seatNumber": "C2",
+        "seatType": "VIP",
+        "isAvailable": false // Booked in Booking data
+      }
+    ],
+    "createdAt": "2025-05-31T10:00:00.000Z",
+    "updatedAt": "2025-05-31T10:00:00.000Z"
+  },
+  {
+    "_id": "507f1f77bcf86cd799439018",
+    "theaterId": "507f1f77bcf86cd799439016",
+    "screenNumber": 2,
+    "totalSeats": 4,
+    "seatLayout": [
+      {
+        "seatNumber": "A1",
+        "seatType": "STANDARD",
+        "isAvailable": true
+      },
+      {
+        "seatNumber": "A2",
+        "seatType": "STANDARD",
+        "isAvailable": true
+      },
+      {
+        "seatNumber": "B1",
+        "seatType": "PREMIUM",
+        "isAvailable": true
+      },
+      {
+        "seatNumber": "B2",
+        "seatType": "PREMIUM",
+        "isAvailable": true
+      }
+    ],
+    "createdAt": "2025-05-31T10:00:00.000Z",
+    "updatedAt": "2025-05-31T10:00:00.000Z"
+  }
+]

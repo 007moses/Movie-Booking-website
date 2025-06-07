@@ -1,0 +1,27 @@
+[
+  {
+    "_id": "507f1f77bcf86cd799439019",
+    "userId": "507f1f77bcf86cd799439012", // Regular user
+    "movieId": "507f1f77bcf86cd799439013", // Movie A
+    "theaterId": "507f1f77bcf86cd799439016", // City Cinema
+    "showtime": {
+      "startTime": "2025-06-01T09:00:00.000Z", // Matches Theater showtime
+      "screenId": "507f1f77bcf86cd799439017" // Screen 1
+    },
+    "seats": [
+      {
+        "seatNumber": "B2",
+        "seatType": "PREMIUM"
+      },
+      {
+        "seatNumber": "C2",
+        "seatType": "VIP"
+      }
+    ],
+    "totalPrice": 27.00, // PREMIUM ($12) + VIP ($15)
+    "status": "CONFIRMED",
+    "paymentStatus": "COMPLETED",
+    "createdAt": "2025-05-31T10:30:00.000Z",
+    "updatedAt": "2025-05-31T10:30:00.000Z"
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Interstellar",
+    "releaseDate": "2014-11-07",
+    "duration": 169,
+    "language": "English",
+    "poster": "https://i.postimg.cc/XXS0nhch/Interstellar.jpg",
+    "genre": "Science Fiction",
+    "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival."
+  },
+  {
+    "title": "The Dark Knight",
+    "releaseDate": "2008-07-18",
+    "duration": 152,
+    "language": "English",
+    "poster": "https://i.postimg.cc/GhG4vnN4/The-dark-knight.webp",
+    "genre": "Action",
+    "description": "When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham."
+  },
+  {
+    "title": "Inception",
+    "releaseDate": "2010-07-16",
+    "duration": 148,
+    "language": "English",
+    "poster": "https://i.postimg.cc/x1V0Qk6C/Inception.jpg",
+    "genre": "Sci-Fi",
+    "description": "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO."
+  },
+  {
+    "title": "Oppenheimer",
+    "releaseDate": "2023-07-21",
+    "duration": 180,
+    "language": "English",
+    "poster": "https://i.postimg.cc/ZRQSM09J/Oppenheimer.jpg",
+    "genre": "Biography",
+    "description": "The story of J. Robert Oppenheimer and the development of the atomic bomb during World War II."
+  },
+  {
+    "title": "Avengers",
+    "releaseDate": "2012-05-04",
+    "duration": 143,
+    "language": "English",
+    "poster": "https://i.postimg.cc/Bn5JnqzC/Avengers-3.jpg",
+    "genre": "Superhero",
+    "description": "Earth's mightiest heroes must come together and learn to fight as a team to stop a threat of unprecedented magnitude."
+  },
+  {
+    "title": "Black Panther",
+    "releaseDate": "2018-02-16",
+    "duration": 134,
+    "language": "English",
+    "poster": "https://i.postimg.cc/MTHw51ps/Black-panther.jpg",
+    "genre": "Action",
+    "description": "T'Challa returns home as king of Wakanda but finds his sovereignty challenged by a new adversary."
+  },
+  {
+    "title": "Captain Marvel",
+    "releaseDate": "2019-03-08",
+    "duration": 123,
+    "language": "English",
+    "poster": "https://i.postimg.cc/MKQWg0bN/Captain-marvel.jpg",
+    "genre": "Superhero",
+    "description": "Carol Danvers becomes one of the universe's most powerful heroes when Earth is caught in a galactic war."
+  },
+  {
+    "title": "Avengers: Endgame",
+    "releaseDate": "2019-04-26",
+    "duration": 181,
+    "language": "English",
+    "poster": "https://i.postimg.cc/QCRjHVsf/Avengers-4.jpg",
+    "genre": "Superhero",
+    "description": "After the devastating events of Infinity War, the Avengers assemble once more to reverse Thanos' actions."
+  },
+  {
+    "title": "Ant-Man and the Wasp",
+    "releaseDate": "2018-07-06",
+    "duration": 118,
+    "language": "English",
+    "poster": "https://i.postimg.cc/nrsHFq8s/antman.jpg",
+    "genre": "Action",
+    "description": "Scott Lang balances being both a superhero and a father while teaming up with Hope van Dyne to uncover secrets."
+  },
+  {
+    "title": "Tenet",
+    "releaseDate": "2020-09-03",
+    "duration": 150,
+    "language": "English",
+    "poster": "https://i.postimg.cc/pLvpZ1bq/Tenet.jpg",
+    "genre": "Sci-Fi",
+    "description": "Armed with only one word—Tenet—and fighting for the survival of the world, a protagonist journeys through a world of international espionage on a mission that will unfold in something beyond real time."
+  }
+]

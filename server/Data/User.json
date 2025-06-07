@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "507f1f77bcf86cd799439011",
+    "email": "admin@example.com",
+    "password": "$2b$10$examplehashedpassword123", 
+    "phone": "+1234567890",
+    "role": "admin",
+    "isActive": true,
+    "createdAt": "2025-05-31T10:00:00.000Z",
+    "updatedAt": "2025-05-31T10:00:00.000Z",
+    "resetPasswordToken": null,
+    "resetPasswordExpires": null,
+    "profileUpdateOTP": null,
+    "profileUpdateOTPExpires": null
+  },
+  {
+    "_id": "507f1f77bcf86cd799439012",
+    "email": "user@example.com",
+    "password": "$2b$10$examplehashedpassword456", 
+    "phone": "+0987654321",
+    "role": "user",
+    "isActive": true,
+    "createdAt": "2025-05-31T10:00:00.000Z",
+    "updatedAt": "2025-05-31T10:00:00.000Z",
+    "resetPasswordToken": null,
+    "resetPasswordExpires": null,
+    "profileUpdateOTP": null,
+    "profileUpdateOTPExpires": null
+  }
+]

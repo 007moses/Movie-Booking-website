@@ -1,0 +1,91 @@
+/* Movies.css */
+.movies-page {
+    background-color: #121212;
+    min-height: 100vh;
+    padding: 32px 16px;
+    color: #ffffff;
+  }
+  
+  .movies-title {
+    font-size: 36px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 32px;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  
+  .movie-card {
+    background-color: #1f2937;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .movie-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  }
+  
+  .movie-poster {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+  }
+  
+  .movie-info {
+    padding: 16px;
+    text-align: center;
+  }
+  
+  .movie-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+  
+  .movie-details {
+    font-size: 14px;
+    color: #d1d5db;
+    margin-bottom: 12px;
+  }
+  
+  .book-now-btn {
+    display: inline-block;
+    background-color: #7c3aed;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .book-now-btn:hover {
+    background-color: #6d28d9;
+    transform: scale(1.05);
+  }
+  
+  @media (max-width: 768px) {
+    .movies-title {
+      font-size: 28px;
+    }
+  
+    .movies-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  
+    .movie-poster {
+      height: 300px;
+    }
+  }

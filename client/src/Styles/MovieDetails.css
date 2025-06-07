@@ -1,0 +1,198 @@
+/* MovieDetails.css */
+.movie-details-page {
+    background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .movie-details-title {
+    font-size: 40px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #e5e7eb;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .movie-details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+  
+  .movie-poster-section {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .movie-poster {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    object-fit: cover;
+  }
+  
+  .movie-info-section {
+    flex: 2;
+    min-width: 300px;
+  }
+  
+  .movie-info {
+    font-size: 16px;
+    color: #d1d5db;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  
+  .movie-synopsis {
+    font-size: 16px;
+    color: #d1d5db;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  
+  .movie-cast {
+    font-size: 16px;
+    color: #d1d5db;
+    line-height: 1.5;
+  }
+  
+  .showtimes-title {
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 32px;
+    color: #f3f4f6;
+    border-bottom: 2px solid #7c3aed;
+    padding-bottom: 8px;
+  }
+  
+  .no-showtimes {
+    font-size: 16px;
+    color: #d1d5db;
+    text-align: center;
+    line-height: 1.5;
+  }
+  
+  .theaters-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  
+  .theater-card {
+    background: linear-gradient(135deg, #1f2937 0%, #2d3748 100%);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .theater-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  }
+  
+  .theater-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f3f4f6;
+    margin-bottom: 12px;
+  }
+  
+  .theater-address {
+    font-size: 14px;
+    color: #d1d5db;
+    margin-bottom: 16px;
+  }
+  
+  .showtimes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .showtime-btn {
+    background: linear-gradient(90deg, #7c3aed 0%, #9333ea 100%);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .showtime-btn:hover {
+    background: linear-gradient(90deg, #6d28d9 0%, #7e22ce 100%);
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(124, 58, 237, 0.4);
+  }
+  
+  .loading, .error {
+    font-size: 20px;
+    color: #d1d5db;
+    text-align: center;
+    padding: 40px;
+  }
+  
+  .error {
+    color: #dc2626;
+  }
+  
+  @media (max-width: 768px) {
+    .movie-details-title {
+      font-size: 32px;
+      margin-bottom: 32px;
+    }
+  
+    .movie-details-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .movie-poster {
+      max-width: 300px;
+    }
+  
+    .showtimes-title {
+      font-size: 24px;
+    }
+  
+    .theater-card {
+      padding: 20px;
+    }
+  
+    .theater-name {
+      font-size: 18px;
+    }
+  
+    .theater-address, .movie-info, .movie-synopsis, .movie-cast {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .movie-details-title {
+      font-size: 28px;
+    }
+  
+    .movie-poster {
+      max-width: 250px;
+    }
+  
+    .showtime-btn {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+  }

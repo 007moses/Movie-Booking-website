@@ -1,0 +1,75 @@
+[
+  {
+    "name": "City Cinema",
+    "address": "123 Main St",
+    "city": "Metropolis",
+    "image": "https://example.com/cinema.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abe2487d5c91796293e3a",
+        "screenNumber": 1,
+        "showDateTime": "2025-06-01T09:00:00.000Z",
+        "format": "2D",
+        "ticketPrice": 10.0
+      },
+      {
+        "movieId": "683abef087d5c91796293e3f",
+        "screenNumber": 1,
+        "showDateTime": "2025-06-01T12:00:00.000Z",
+        "format": "2D",
+        "ticketPrice": 10.0
+      },
+      {
+        "movieId": "683abefc87d5c91796293e41",
+        "screenNumber": 1,
+        "showDateTime": "2025-06-01T15:00:00.000Z",
+        "format": "3D",
+        "ticketPrice": 12.0
+      },
+      {
+        "movieId": "683abefc87d5c91796293e41",
+        "screenNumber": 1,
+        "showDateTime": "2025-06-01T18:00:00.000Z",
+        "format": "3D",
+        "ticketPrice": 12.0
+      },
+      {
+        "movieId": "683abf3c0e394d1cfc345f91",
+        "screenNumber": 1,
+        "showDateTime": "2025-06-01T21:00:00.000Z",
+        "format": "IMAX",
+        "ticketPrice": 15.0
+      },
+      {
+        "movieId": "683abf520e394d1cfc345f93",
+        "screenNumber": 2,
+        "showDateTime": "2025-06-01T10:00:00.000Z",
+        "format": "IMAX",
+        "ticketPrice": 15.0
+      },
+      {
+        "movieId": "683abf5e0e394d1cfc345f95",
+        "screenNumber": 2,
+        "showDateTime": "2025-06-01T13:00:00.000Z",
+        "format": "2D",
+        "ticketPrice": 10.0
+      },
+      {
+        "movieId": "683abf690e394d1cfc345f97",
+        "screenNumber": 2,
+        "showDateTime": "2025-06-01T16:00:00.000Z",
+        "format": "3D",
+        "ticketPrice": 12.0
+      },
+      {
+        "movieId": "683abf730e394d1cfc345f99",
+        "screenNumber": 2,
+        "showDateTime": "2025-06-01T19:00:00.000Z",
+        "format": "IMAX",
+        "ticketPrice": 15.0
+      }
+    ],
+    "createdAt": "2025-05-31T10:00:00.000Z",
+    "updatedAt": "2025-05-31T10:00:00.000Z"
+  }
+]

@@ -1,0 +1,12 @@
+# Node dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Optional: Ignore environment variables
+*.env
+**/.env
+
+# Optional: System or editor-specific files
+.DS_Store
+.vscode/

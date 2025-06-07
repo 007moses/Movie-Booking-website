@@ -1,0 +1,152 @@
+[
+  {
+    "name": "City Cinema",
+    "address": "123 Main St",
+    "city": "New York",
+    "image": "https://i.postimg.cc/c1F6zz4F/IMG-20250519-WA0003.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abe2487d5c91796293e3a",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-20T14:30:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      }
+    ]
+  },
+  {
+    "name": "Grand Screen Theater",
+    "address": "456 Elm St",
+    "city": "Los Angeles",
+    "image": "https://i.postimg.cc/c1F6zz4F/IMG-20250519-WA0003.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abedf87d5c91796293e3d",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-21T16:00:00Z",
+        "format": "3D",
+        "ticketPrice": 15.50
+      }
+    ]
+  },
+  {
+    "name": "Ocean View Cinemas",
+    "address": "789 Ocean Ave",
+    "city": "Miami",
+    "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abef087d5c91796293e3f",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-20T19:00:00Z",
+        "format": "IMAX",
+        "ticketPrice": 18.00
+      }
+    ]
+  },
+  {
+    "name": "Metroplex 10",
+    "address": "321 Park Blvd",
+    "city": "Chicago",
+    "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abefc87d5c91796293e41",
+        "screenNumber": 5,
+        "showDateTime": "2025-05-22T13:00:00Z",
+        "format": "2D",
+        "ticketPrice": 11.00
+      }
+    ]
+  },
+  {
+    "name": "Star Galaxy Theater",
+    "address": "12 Galaxy Way",
+    "city": "Houston",
+    "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abf0987d5c91796293e43",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-21T18:00:00Z",
+        "format": "3D",
+        "ticketPrice": 14.00
+      }
+    ]
+  },
+  {
+    "name": "Downtown Movie House",
+    "address": "200 Downtown Ln",
+    "city": "Seattle",
+    "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abf3c0e394d1cfc345f91",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-20T20:30:00Z",
+        "format": "2D",
+        "ticketPrice": 13.00
+      }
+    ]
+  },
+  {
+    "name": "Ridgeway Cinemas",
+    "address": "87 Ridge Rd",
+    "city": "Denver",
+    "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abf520e394d1cfc345f93",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-23T17:45:00Z",
+        "format": "2D",
+        "ticketPrice": 12.00
+      }
+    ]
+  },
+  {
+    "name": "Sunset Boulevard Theater",
+    "address": "500 Sunset Blvd",
+    "city": "San Francisco",
+    "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abf5e0e394d1cfc345f95",
+        "screenNumber": 4,
+        "showDateTime": "2025-05-21T15:15:00Z",
+        "format": "IMAX",
+        "ticketPrice": 17.00
+      }
+    ]
+  },
+  {
+    "name": "Broadway Screens",
+    "address": "33 Broadway",
+    "city": "Boston",
+    "image": "https://i.postimg.cc/MTyVRmyh/IMG-20250519-WA0012.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abf690e394d1cfc345f97",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-22T21:00:00Z",
+        "format": "3D",
+        "ticketPrice": 14.75
+      }
+    ]
+  },
+  {
+    "name": "CineWorld 8",
+    "address": "91 Cine Dr",
+    "city": "Atlanta",
+    "image": "https://i.postimg.cc/k4cDq1NX/IMG-20250519-WA0004.jpg",
+    "showtimes": [
+      {
+        "movieId": "683abf730e394d1cfc345f99",
+        "screenNumber": 6,
+        "showDateTime": "2025-05-24T12:00:00Z",
+        "format": "2D",
+        "ticketPrice": 10.50
+      }
+    ]
+  }
+]
