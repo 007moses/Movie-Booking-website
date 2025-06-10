@@ -3,7 +3,9 @@
     "title": "Interstellar",
     "releaseDate": "2014-11-07",
     "duration": 169,
+    "trailer":"https://www.youtube.com/watch?v=Z1BCujX3pw8",
     "language": "English",
+    "synopsis":"In Earth's future, a global crop blight and second Dust Bowl are slowly rendering the planet uninhabitable. Professor Brand (Michael Caine), a brilliant NASA physicist, is working on plans to save mankind by transporting Earth's population to a new home via a wormhole. But first, Brand must send former NASA pilot Cooper (Matthew McConaughey) and a team of researchers through the wormhole and across the galaxy to find out which of three planets could be mankind's new home",
     "poster": "https://i.postimg.cc/XXS0nhch/Interstellar.jpg",
     "genre": "Science Fiction",
     "description": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival."
@@ -12,7 +14,9 @@
     "title": "The Dark Knight",
     "releaseDate": "2008-07-18",
     "duration": 152,
+    "trailer":"https://www.youtube.com/watch?v=EXeTwQWrcwY",
     "language": "English",
+    "synopsis":"In Earth's future, a global crop blight and second Dust Bowl are slowly rendering the planet uninhabitable. Professor Brand (Michael Caine), a brilliant NASA physicist, is working on plans to save mankind by transporting Earth's population to a new home via a wormhole. But first, Brand must send former NASA pilot Cooper (Matthew McConaughey) and a team of researchers through the wormhole and across the galaxy to find out which of three planets could be mankind's new home",
     "poster": "https://i.postimg.cc/GhG4vnN4/The-dark-knight.webp",
     "genre": "Action",
     "description": "When the menace known as the Joker emerges from his mysterious past, he wreaks havoc and chaos on the people of Gotham."
@@ -21,7 +25,9 @@
     "title": "Inception",
     "releaseDate": "2010-07-16",
     "duration": 148,
+    "trailer":"https://www.youtube.com/watch?v=YoHD9XEInc0",
     "language": "English",
+    "synopsis":"Dom Cobb (Leonardo DiCaprio) is a thief with the rare ability to enter people's dreams and steal their secrets from their subconscious. His skill has made him a hot commodity in the world of corporate espionage but has also cost him everything he loves. Cobb gets a chance at redemption when he is offered a seemingly impossible task: Plant an idea in someone's mind. If he succeeds, it will be the perfect crime, but a dangerous enemy anticipates Cobb's every move",
     "poster": "https://i.postimg.cc/x1V0Qk6C/Inception.jpg",
     "genre": "Sci-Fi",
     "description": "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO."
@@ -30,7 +36,9 @@
     "title": "Oppenheimer",
     "releaseDate": "2023-07-21",
     "duration": 180,
+    "trailer":"https://www.youtube.com/watch?v=uYPbbksJxIg",
     "language": "English",
+    "synopsis":"During World War II, Lt. Gen. Leslie Groves Jr. appoints physicist J. Robert Oppenheimer to work on the top-secret Manhattan Project. Oppenheimer and a team of scientists spend years developing and designing the atomic bomb. Their work comes to fruition on July 16, 1945, as they witness the world's first nuclear explosion, forever changing the course of history.",
     "poster": "https://i.postimg.cc/ZRQSM09J/Oppenheimer.jpg",
     "genre": "Biography",
     "description": "The story of J. Robert Oppenheimer and the development of the atomic bomb during World War II."
@@ -39,7 +47,9 @@
     "title": "Avengers",
     "releaseDate": "2012-05-04",
     "duration": 143,
+    "trailer":"https://www.youtube.com/watch?v=eOrNdBpGMv8",
     "language": "English",
+    "synopsis":"",
     "poster": "https://i.postimg.cc/Bn5JnqzC/Avengers-3.jpg",
     "genre": "Superhero",
     "description": "Earth's mightiest heroes must come together and learn to fight as a team to stop a threat of unprecedented magnitude."
@@ -48,7 +58,9 @@
     "title": "Black Panther",
     "releaseDate": "2018-02-16",
     "duration": 134,
+    "trailer":"https://www.youtube.com/watch?v=xjDjIWPwcPU",
     "language": "English",
+    "synopsis":"The Avengersmovie, a Marvel Cinematic Universe film, tells the story of Earth's mightiest heroes (Iron Man, Thor, Captain America, The Hulk, Hawkeye, and Black Widow) being brought together by S.H.I.E.L.D. to stop Loki's alien invasion and the theft of the Tesseract. Loki, Thor's adopted brother, plots to conquer Earth with the help of the Chitauri army. ",
     "poster": "https://i.postimg.cc/MTHw51ps/Black-panther.jpg",
     "genre": "Action",
     "description": "T'Challa returns home as king of Wakanda but finds his sovereignty challenged by a new adversary."
@@ -57,7 +69,9 @@
     "title": "Captain Marvel",
     "releaseDate": "2019-03-08",
     "duration": 123,
+    "trailer":"https://www.youtube.com/watch?v=Z1BCujX3pw8",
     "language": "English",
+    "synopsis":"Captain Marvel is an extraterrestrial Kree warrior who finds herself caught in the middle of an intergalactic battle between her people and the Skrulls. Living on Earth in 1995, she keeps having recurring memories of another life as U.S. Air Force pilot Carol Danvers. With help from Nick Fury, Captain Marvel tries to uncover the secrets of her past while harnessing her special superpowers to end the war with the evil Skrulls",
     "poster": "https://i.postimg.cc/MKQWg0bN/Captain-marvel.jpg",
     "genre": "Superhero",
     "description": "Carol Danvers becomes one of the universe's most powerful heroes when Earth is caught in a galactic war."
@@ -66,7 +80,9 @@
     "title": "Avengers: Endgame",
     "releaseDate": "2019-04-26",
     "duration": 181,
+    "trailer":"https://www.youtube.com/watch?v=hA6hldpSTF8",
     "language": "English",
+    "synopsis":"The fourth installment in the Avengers saga is the culmination of 22 interconnected Marvel films and the climax of a journey. The world's heroes finally understand just how fragile reality is, and the sacrifices that must be made to uphold it, in a story of friendship, teamwork and setting aside differences to overcome an impossible obstacle.",
     "poster": "https://i.postimg.cc/QCRjHVsf/Avengers-4.jpg",
     "genre": "Superhero",
     "description": "After the devastating events of Infinity War, the Avengers assemble once more to reverse Thanos' actions."
@@ -75,7 +91,9 @@
     "title": "Ant-Man and the Wasp",
     "releaseDate": "2018-07-06",
     "duration": 118,
+    "trailer":"https://www.youtube.com/watch?v=UUkn-enk2RU",
     "language": "English",
+    "synopsis":"Scott Lang is grappling with the consequences of his choices as both a superhero and a father. Approached by Hope van Dyne and Dr. Hank Pym, Lang must once again don the Ant-Man suit and fight alongside the Wasp. The urgent mission soon leads to secret revelations from the past as the dynamic duo finds itself in an epic battle against a powerful new enemy.",
     "poster": "https://i.postimg.cc/nrsHFq8s/antman.jpg",
     "genre": "Action",
     "description": "Scott Lang balances being both a superhero and a father while teaming up with Hope van Dyne to uncover secrets."
@@ -84,7 +102,9 @@
     "title": "Tenet",
     "releaseDate": "2020-09-03",
     "duration": 150,
+    "trailer":"https://www.youtube.com/watch?v=L3pk_TBkihU",
     "language": "English",
+    "synopsis":"A secret agent is given a single word as his weapon and sent to prevent the onset of World War III. He must travel through time and bend the laws of nature in order to be successful in his mission",
     "poster": "https://i.postimg.cc/pLvpZ1bq/Tenet.jpg",
     "genre": "Sci-Fi",
     "description": "Armed with only one word—Tenet—and fighting for the survival of the world, a protagonist journeys through a world of international espionage on a mission that will unfold in something beyond real time."

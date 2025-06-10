@@ -6,11 +6,46 @@
     "image": "https://i.postimg.cc/c1F6zz4F/IMG-20250519-WA0003.jpg",
     "showtimes": [
       {
-        "movieId": "683abe2487d5c91796293e3a",
+        "movieTitle": "Interstellar",
         "screenNumber": 1,
         "showDateTime": "2025-05-20T14:30:00Z",
         "format": "2D",
         "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "The Dark Knight",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-20T16:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "Inception",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-20T18:30:00Z",
+        "format": "3D",
+        "ticketPrice": 15.50
+      },
+      {
+        "movieTitle": "Oppenheimer",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-20T21:00:00Z",
+        "format": "IMAX",
+        "ticketPrice": 18.00
+      },
+      {
+        "movieTitle": "Avengers",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-21T14:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "Black Panther",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-21T16:30:00Z",
+        "format": "3D",
+        "ticketPrice": 15.50
       }
     ]
   },
@@ -21,11 +56,46 @@
     "image": "https://i.postimg.cc/c1F6zz4F/IMG-20250519-WA0003.jpg",
     "showtimes": [
       {
-        "movieId": "683abedf87d5c91796293e3d",
+        "movieTitle": "Avengers",
         "screenNumber": 2,
         "showDateTime": "2025-05-21T16:00:00Z",
         "format": "3D",
         "ticketPrice": 15.50
+      },
+      {
+        "movieTitle": "Captain Marvel",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-21T13:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "Avengers: Endgame",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-21T19:00:00Z",
+        "format": "IMAX",
+        "ticketPrice": 18.00
+      },
+      {
+        "movieTitle": "Ant-Man and the Wasp",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-22T14:30:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "Tenet",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-22T17:00:00Z",
+        "format": "3D",
+        "ticketPrice": 15.50
+      },
+      {
+        "movieTitle": "Interstellar",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-22T20:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
       }
     ]
   },
@@ -36,11 +106,46 @@
     "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
     "showtimes": [
       {
-        "movieId": "683abef087d5c91796293e3f",
+        "movieTitle": "Tenet",
         "screenNumber": 1,
         "showDateTime": "2025-05-20T19:00:00Z",
         "format": "IMAX",
         "ticketPrice": 18.00
+      },
+      {
+        "movieTitle": "The Dark Knight",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-20T15:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "Inception",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-20T22:00:00Z",
+        "format": "3D",
+        "ticketPrice": 15.50
+      },
+      {
+        "movieTitle": "Oppenheimer",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-21T13:30:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "Avengers",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-21T16:30:00Z",
+        "format": "IMAX",
+        "ticketPrice": 18.00
+      },
+      {
+        "movieTitle": "Black Panther",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-21T19:30:00Z",
+        "format": "3D",
+        "ticketPrice": 15.50
       }
     ]
   },
@@ -51,9 +156,44 @@
     "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
     "showtimes": [
       {
-        "movieId": "683abefc87d5c91796293e41",
+        "movieTitle": "Oppenheimer",
         "screenNumber": 5,
         "showDateTime": "2025-05-22T13:00:00Z",
+        "format": "2D",
+        "ticketPrice": 11.00
+      },
+      {
+        "movieTitle": "Captain Marvel",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-22T15:30:00Z",
+        "format": "3D",
+        "ticketPrice": 14.75
+      },
+      {
+        "movieTitle": "Avengers: Endgame",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-22T18:00:00Z",
+        "format": "IMAX",
+        "ticketPrice": 17.00
+      },
+      {
+        "movieTitle": "Ant-Man and the Wasp",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-23T14:00:00Z",
+        "format": "2D",
+        "ticketPrice": 11.00
+      },
+      {
+        "movieTitle": "Tenet",
+        "screenNumber": 4,
+        "showDateTime": "2025-05-23T16:30:00Z",
+        "format": "3D",
+        "ticketPrice": 14.75
+      },
+      {
+        "movieTitle": "Interstellar",
+        "screenNumber": 5,
+        "showDateTime": "2025-05-23T19:00:00Z",
         "format": "2D",
         "ticketPrice": 11.00
       }
@@ -66,11 +206,46 @@
     "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
     "showtimes": [
       {
-        "movieId": "683abf0987d5c91796293e43",
+        "movieTitle": "Black Panther",
         "screenNumber": 3,
         "showDateTime": "2025-05-21T18:00:00Z",
         "format": "3D",
         "ticketPrice": 14.00
+      },
+      {
+        "movieTitle": "The Dark Knight",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-21T14:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "Inception",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-21T20:30:00Z",
+        "format": "IMAX",
+        "ticketPrice": 17.00
+      },
+      {
+        "movieTitle": "Oppenheimer",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-22T13:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "Avengers",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-22T15:30:00Z",
+        "format": "3D",
+        "ticketPrice": 14.00
+      },
+      {
+        "movieTitle": "Captain Marvel",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-22T18:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
       }
     ]
   },
@@ -81,9 +256,44 @@
     "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
     "showtimes": [
       {
-        "movieId": "683abf3c0e394d1cfc345f91",
+        "movieTitle": "Captain Marvel",
         "screenNumber": 2,
         "showDateTime": "2025-05-20T20:30:00Z",
+        "format": "2D",
+        "ticketPrice": 13.00
+      },
+      {
+        "movieTitle": "Avengers: Endgame",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-20T16:00:00Z",
+        "format": "IMAX",
+        "ticketPrice": 17.00
+      },
+      {
+        "movieTitle": "Ant-Man and the Wasp",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-20T18:30:00Z",
+        "format": "3D",
+        "ticketPrice": 15.50
+      },
+      {
+        "movieTitle": "Tenet",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-21T14:00:00Z",
+        "format": "2D",
+        "ticketPrice": 13.00
+      },
+      {
+        "movieTitle": "Interstellar",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-21T16:30:00Z",
+        "format": "IMAX",
+        "ticketPrice": 17.00
+      },
+      {
+        "movieTitle": "The Dark Knight",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-21T19:00:00Z",
         "format": "2D",
         "ticketPrice": 13.00
       }
@@ -96,9 +306,44 @@
     "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
     "showtimes": [
       {
-        "movieId": "683abf520e394d1cfc345f93",
+        "movieTitle": "Ant-Man and the Wasp",
         "screenNumber": 1,
         "showDateTime": "2025-05-23T17:45:00Z",
+        "format": "2D",
+        "ticketPrice": 12.00
+      },
+      {
+        "movieTitle": "Inception",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-23T14:00:00Z",
+        "format": "3D",
+        "ticketPrice": 14.75
+      },
+      {
+        "movieTitle": "Oppenheimer",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-23T19:00:00Z",
+        "format": "IMAX",
+        "ticketPrice": 17.00
+      },
+      {
+        "movieTitle": "Avengers",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-24T13:30:00Z",
+        "format": "2D",
+        "ticketPrice": 12.00
+      },
+      {
+        "movieTitle": "Black Panther",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-24T16:00:00Z",
+        "format": "3D",
+        "ticketPrice": 14.75
+      },
+      {
+        "movieTitle": "Captain Marvel",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-24T18:30:00Z",
         "format": "2D",
         "ticketPrice": 12.00
       }
@@ -111,11 +356,46 @@
     "image": "https://i.postimg.cc/3Jw0JTcM/IMG-20250519-WA0005.jpg",
     "showtimes": [
       {
-        "movieId": "683abf5e0e394d1cfc345f95",
+        "movieTitle": "Avengers: Endgame",
         "screenNumber": 4,
         "showDateTime": "2025-05-21T15:15:00Z",
         "format": "IMAX",
         "ticketPrice": 17.00
+      },
+      {
+        "movieTitle": "Tenet",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-21T13:00:00Z",
+        "format": "3D",
+        "ticketPrice": 14.75
+      },
+      {
+        "movieTitle": "Interstellar",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-21T18:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "The Dark Knight",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-22T14:30:00Z",
+        "format": "IMAX",
+        "ticketPrice": 17.00
+      },
+      {
+        "movieTitle": "Inception",
+        "screenNumber": 4,
+        "showDateTime": "2025-05-22T17:00:00Z",
+        "format": "3D",
+        "ticketPrice": 14.75
+      },
+      {
+        "movieTitle": "Oppenheimer",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-22T19:30:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
       }
     ]
   },
@@ -126,11 +406,46 @@
     "image": "https://i.postimg.cc/MTyVRmyh/IMG-20250519-WA0012.jpg",
     "showtimes": [
       {
-        "movieId": "683abf690e394d1cfc345f97",
+        "movieTitle": "Tenet",
         "screenNumber": 2,
         "showDateTime": "2025-05-22T21:00:00Z",
         "format": "3D",
         "ticketPrice": 14.75
+      },
+      {
+        "movieTitle": "Avengers",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-22T15:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "Black Panther",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-22T18:00:00Z",
+        "format": "IMAX",
+        "ticketPrice": 17.00
+      },
+      {
+        "movieTitle": "Captain Marvel",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-23T13:30:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
+      },
+      {
+        "movieTitle": "Avengers: Endgame",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-23T16:30:00Z",
+        "format": "3D",
+        "ticketPrice": 14.75
+      },
+      {
+        "movieTitle": "Ant-Man and the Wasp",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-23T19:00:00Z",
+        "format": "2D",
+        "ticketPrice": 12.99
       }
     ]
   },
@@ -141,9 +456,44 @@
     "image": "https://i.postimg.cc/k4cDq1NX/IMG-20250519-WA0004.jpg",
     "showtimes": [
       {
-        "movieId": "683abf730e394d1cfc345f99",
+        "movieTitle": "Interstellar",
         "screenNumber": 6,
         "showDateTime": "2025-05-24T12:00:00Z",
+        "format": "2D",
+        "ticketPrice": 10.50
+      },
+      {
+        "movieTitle": "The Dark Knight",
+        "screenNumber": 1,
+        "showDateTime": "2025-05-24T14:30:00Z",
+        "format": "3D",
+        "ticketPrice": 13.50
+      },
+      {
+        "movieTitle": "Inception",
+        "screenNumber": 2,
+        "showDateTime": "2025-05-24T17:00:00Z",
+        "format": "IMAX",
+        "ticketPrice": 16.00
+      },
+      {
+        "movieTitle": "Oppenheimer",
+        "screenNumber": 3,
+        "showDateTime": "2025-05-25T13:00:00Z",
+        "format": "2D",
+        "ticketPrice": 10.50
+      },
+      {
+        "movieTitle": "Avengers",
+        "screenNumber": 4,
+        "showDateTime": "2025-05-25T15:30:00Z",
+        "format": "3D",
+        "ticketPrice": 13.50
+      },
+      {
+        "movieTitle": "Black Panther",
+        "screenNumber": 5,
+        "showDateTime": "2025-05-25T18:00:00Z",
         "format": "2D",
         "ticketPrice": 10.50
       }

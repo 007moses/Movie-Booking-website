@@ -1,51 +1,65 @@
-import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import UseApiFetch from "../API-Method/UseApiFetch";
 import "../Styles/MovieDetails.css";
+import MovieData from "../../../server/Data/Movies.json";
+import TheaterData from "../../../server/Data/Theaters.json";
+import ReactPlayer from "react-player";
 
 const MovieDetails = () => {
-  const [moviesData, setMoviesData] = useState([]);
-  const [startInit, setStartInit] = useState(true);
-  const { apiKey, serverRequest, fetchError, responseData, isLoading } = UseApiFetch();
-  const theaters = useSelector((state) => state.theaters.theaters); // Get theaters from Redux
+  // const [moviesData, setMoviesData] = useState([]);
+  // const [startInit, setStartInit] = useState(true);
+  // const { apiKey, serverRequest, fetchError, responseData, isLoading } = UseApiFetch();
   const params = useParams();
 
-  const GetMovies = () => {
-    const requestConfig = {
-      method: "GET",
-      apiUrl: "/api/movies",
-      apiKey: "GETMOVIES",
-    };
-    serverRequest(requestConfig);
-  };
 
-  const fnResponseForGetMovies = () => {
-    if (Array.isArray(responseData)) {
-      setMoviesData(responseData);
-    } else {
-      console.error("Invalid movie data:", responseData);
-      setMoviesData([]);
-    }
-  };
+  // const GetMovies = () => {
+  //   const requestConfig = {
+  //     method: "GET",
+  //     apiUrl: "/api/movies",
+  //     apiKey: "GETMOVIES",
+  //   };
+  //   serverRequest(requestConfig);
+  // };
 
-  useEffect(() => {
-    if (startInit) {
-      GetMovies();
-      setStartInit(false);
-    } else if (!isLoading && apiKey === "GETMOVIES") {
-      fnResponseForGetMovies();
-    }
-  }, [startInit, isLoading, apiKey, responseData, fetchError]);
+  // const fnResponseForGetMovies = () => {
+  //   if (Array.isArray(responseData)) {
+  //     setMoviesData(responseData);
+  //   } else {
+  //     console.error("Invalid movie data:", responseData);
+  //     setMoviesData([]);
+  //   }
+  // };
 
-  const movie = moviesData?.find((eachMovie) => eachMovie?.title.split(" ").join("-") === params.title);
-  console.log(movie,"movie")
+  // useEffect(() => {
+  //   if (startInit) {
+  //     GetMovies();
+  //     setStartInit(false);
+  //   } else if (!isLoading && apiKey === "GETMOVIES") {
+  //     fnResponseForGetMovies();
+  //   }
+  // }, [startInit, isLoading, apiKey, responseData, fetchError]);
+
+  const movie = MovieData?.find(
+    (eachMovie) => eachMovie?.title.split(" ").join("-") === params.title
+  );
+  console.log(movie, "movie");
+
+  const theaters = TheaterData.filter((eachTheater) =>
+    eachTheater.showtimes.some(
+      (showtime) => showtime.movieTitle === movie.title
+    )
+  );
+
   return (
     <div className="movie-details-page">
       <h1 className="movie-details-title">{movie?.title}</h1>
       <div className="movie-details-container">
         <div className="movie-poster-section">
-          <img src={movie?.poster} alt={movie?.title} className="movie-poster" />
+          <img
+            src={movie?.poster}
+            alt={movie?.title}
+            className="movie-poster"
+          />
         </div>
         <div className="movie-info-section">
           <p className="movie-info">
@@ -58,30 +72,41 @@ const MovieDetails = () => {
             <strong>Rating:</strong> {movie?.rating}
           </p>
           <p className="movie-cast">
-            <strong>Cast:</strong> {movie?.cast?.join(", ") || "To be announced"}
+            <strong>Cast:</strong>{" "}
+            {movie?.cast?.join(", ") || "To be announced"}
+          </p>
+          <p>
+            <strong>Story:</strong> {movie?.synopsis}
           </p>
         </div>
       </div>
-      <h2 className="showtimes-title">Available Showtimes</h2>
-      {theaters?.length === 0 ? (
-        <p className="no-showtimes">No showtimes available for this movie.</p>
+      <div className="trailer">
+        <div className="trailer-container" >
+          <TrailerPlayer
+            trailerUrl={movie.trailer}
+          />
+        </div>
+      </div>
+
+      <h2 className="showtimes-title">Available Theaters</h2>
+      {theaters.length === 0 ? (
+        <p className="no-showtimes">No Theaters available for this movie.</p>
       ) : (
         <div className="theaters-grid">
-          {theaters?.map((theater) => (
-            <div key={theater?._id} className="theater-card">
-              <h3 className="theater-name">{theater?.name}</h3>
-              <p className="theater-address">{theater?.address}</p>
+          {theaters.map((theater, id) => (
+            <div key={id} className="theater-card">
+              <h3 className="theater-name">{theater.name}</h3>
+              <img
+                src={theater.image}
+                alt={theater.name}
+                className="theater-image"
+              />
+              <p className="theater-address">{theater.address}</p>
               <div className="showtimes-list">
-                {theater?.showtimes
-                  .filter((showtime) => showtime.movieId?.title === movie?.title)
+                {theater.showtimes
+                  .filter((showtime) => showtime.movieTitle === movie.title)
                   .map((showtime, index) => (
-                    <Link
-                      key={index}
-                      to={`/booking/${movie?._id}/${theater?._id}/${encodeURIComponent(showtime.startTime)}`}
-                      className="showtime-btn"
-                    >
-                      {new Date(showtime.startTime).toLocaleString()}
-                    </Link>
+                    <div key={index}>{showtime.showDateTime}</div>
                   ))}
               </div>
             </div>
@@ -93,3 +118,11 @@ const MovieDetails = () => {
 };
 
 export default MovieDetails;
+
+const TrailerPlayer = ({ trailerUrl }) => {
+  return (
+    <div className="trailer-container">
+      <ReactPlayer url={trailerUrl} controls width="100%" height="100%" />
+    </div>
+  );
+};

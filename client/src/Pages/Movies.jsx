@@ -13,6 +13,7 @@ import Avengers4 from "../assets/Avengers-4.jpg"
 import Antman from "../assets/antman.jpg"
 import Tenet from "../assets/Tenet.jpg"
 import UseApiFetch from "../API-Method/UseApiFetch";
+import MovieData from '../../../server/Data/Movies.json'
 
 
 
@@ -86,8 +87,8 @@ const Movies = () => {
     <div className="movies-page">
       <h1 className="movies-title">Now Showing</h1>
       <div className="movies-grid">
-        {MoviesData?.map((movie) => (
-          <div key={movie.id} className="movie-card">
+        {MovieData.map((movie,id) => (
+          <div key={id} className="movie-card">
             <img
               src={movie?.poster}
               alt={movie?.title}
@@ -106,7 +107,11 @@ const Movies = () => {
               </Button>  */}
               <button
                className="book-now-btn"
-               onClick={()=>navigate(`/movies/${movie?.title.split(" ").join("-")}`)} >
+               onClick={()=>{
+                navigate(`/movies/${movie?.title.split(" ").join("-")}`)
+                window.scrollTo(0,0)
+              }}
+                >
                 Book Now
               </button>
             
