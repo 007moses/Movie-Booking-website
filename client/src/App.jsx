@@ -10,6 +10,9 @@ import MovieDetails from './Pages/MovieDetails.jsx'
 import Login from './Pages/LoginPage.jsx'
 import SignUp from './Pages/SignUpPage.jsx'
 import ForgotPassword from './Pages/ForgotPassword.jsx'
+import SeatBooking from './Pages/SeatBookingPage.jsx'
+import AboutUs from './Pages/About.jsx'
+import Footer from './Components/Footer.jsx'
 
 function App() {
 
@@ -26,11 +29,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/Signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path='/:theater/:movie/SeatBooking' element={<SeatBooking/>}/>
+        <Route path='/About' element={<AboutUs/>}/>
         {/* <Route path="/showtimes/:theaterID" element={}/> */}
 
         {/* Placeholder for booking page */}
         <Route path="/booking/:movieId/:theaterId/:showtime" element={<div>Booking Page (TBD)</div>} />
       </Routes>
+      <Footer/>
     </BrowserRouter>
   )
 }

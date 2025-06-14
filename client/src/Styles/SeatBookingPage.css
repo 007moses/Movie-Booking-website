@@ -1,0 +1,311 @@
+/* SeatBooking.css */
+.seat-booking-page {
+  background-color: #121212;
+  min-height: 100vh;
+  color: #ffffff;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.seat-booking-container {
+  max-width: 1280px;
+  width: 100%;
+  padding: 48px 16px;
+}
+
+.seat-booking-title {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.theater-title {
+  font-size: 32px;
+  background: linear-gradient(to right, #06b6d4, #3b82f6, #8b5cf6);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 10px;
+  font-weight: bold;
+  animation: gradientMove 3s ease-in-out infinite;
+}
+
+.movie-title {
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.movie-title > span {
+  background: linear-gradient(to right, #06b6d4, #3b82f6, #8b5cf6);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding: 10px;
+  font-weight: bold;
+  animation: gradientMove 3s ease-in-out infinite;
+}
+
+.screen-selection {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.screen-selection-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.screen-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.screen-button {
+  background-color: #1f2937;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid transparent;
+  transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+.screen-button:hover {
+  background-color: #374151;
+  transform: scale(1.05);
+}
+
+.screen-button-active {
+  background-color: #7c3aed;
+  border-color: #6d28d9;
+}
+
+.screen-button-active:hover {
+  background-color: #6d28d9;
+  transform: scale(1.05);
+}
+
+.screen-section {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.screen-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.screen-image {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid #7c3aed; /* Matches purple accents */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Matches featured-card */
+  display: block;
+  margin: 0 auto;
+}
+
+.seat-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.row-label {
+  width: 32px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #d1d5db;
+  margin-right: 8px;
+  text-align: right;
+}
+
+.seat {
+  width: 40px;
+  height: 40px;
+  margin: 4px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.seat-available {
+  background-color: #1f2937;
+}
+
+.seat-available:hover {
+  background-color: #374151;
+  transform: scale(1.05);
+}
+
+.seat-selected {
+  background-color: #7c3aed;
+}
+
+.seat-selected:hover {
+  background-color: #6d28d9;
+  transform: scale(1.05);
+}
+
+.seat-booked {
+  background-color: #4b5563;
+  cursor: not-allowed;
+}
+
+.seat-booking-info {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.seat-booking-info-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.confirm-button {
+  display: inline-block;
+  background-color: #7c3aed;
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.confirm-button:hover {
+  background-color: #6d28d9;
+  transform: scale(1.05);
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-box {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.legend-box-available {
+  background-color: #1f2937;
+}
+
+.legend-box-selected {
+  background-color: #7c3aed;
+}
+
+.legend-box-booked {
+  background-color: #4b5563;
+}
+
+.legend-text {
+  font-size: 16px;
+  color: #d1d5db;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .seat-booking-title {
+    font-size: 28px;
+  }
+
+  .seat-booking-container {
+    padding: 24px 16px;
+  }
+
+  .screen-selection-title {
+    font-size: 18px;
+  }
+
+  .screen-button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  .seat {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    margin: 2px;
+  }
+
+  .row-label {
+    width: 24px;
+    font-size: 16px;
+  }
+
+  .screen-title {
+    font-size: 18px;
+  }
+
+  .screen-image {
+    max-width: 100%;
+  }
+
+  .confirm-button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .seat-booking-info-title {
+    font-size: 16px;
+  }
+
+  .legend-box {
+    width: 20px;
+    height: 20px;
+  }
+
+  .legend-text {
+    font-size: 14px;
+  }
+}

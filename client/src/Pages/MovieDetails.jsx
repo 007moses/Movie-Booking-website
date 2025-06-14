@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import UseApiFetch from "../API-Method/UseApiFetch";
 import "../Styles/MovieDetails.css";
 import MovieData from "../../../server/Data/Movies.json";
@@ -10,7 +10,7 @@ const MovieDetails = () => {
   // const [startInit, setStartInit] = useState(true);
   // const { apiKey, serverRequest, fetchError, responseData, isLoading } = UseApiFetch();
   const params = useParams();
-
+  const navigate = useNavigate();
 
   // const GetMovies = () => {
   //   const requestConfig = {
@@ -81,10 +81,8 @@ const MovieDetails = () => {
         </div>
       </div>
       <div className="trailer">
-        <div className="trailer-container" >
-          <TrailerPlayer
-            trailerUrl={movie.trailer}
-          />
+        <div className="trailer-container">
+          <TrailerPlayer trailerUrl={movie.trailer} />
         </div>
       </div>
 
@@ -94,7 +92,19 @@ const MovieDetails = () => {
       ) : (
         <div className="theaters-grid">
           {theaters.map((theater, id) => (
-            <div key={id} className="theater-card">
+            <div
+              key={id}
+              className="theater-card"
+              onClick={() =>{
+                navigate(
+                  `/${theater.name.split(" ").join("-")}/${movie.title
+                    .split(" ")
+                    .join("-")}/SeatBooking`
+                )
+                window.scrollTo(0,0)
+              }
+              }
+            >
               <h3 className="theater-name">{theater.name}</h3>
               <img
                 src={theater.image}

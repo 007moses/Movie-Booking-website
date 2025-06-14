@@ -1,0 +1,122 @@
+/* Footer.css */
+.footer {
+  background-color: #1f2937; /* Matches featured-card background */
+  color: #ffffff;
+  padding: 48px 16px 16px;
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.footer-section {
+  text-align: left;
+}
+
+.footer-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #7c3aed; /* Matches purple accents */
+}
+
+.footer-text {
+  font-size: 16px;
+  color: #d1d5db; /* Matches secondary text */
+  margin-bottom: 8px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-link {
+  color: #d1d5db;
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #7c3aed;
+}
+
+.footer-social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 60%;
+}
+
+.footer-social-link {
+  display: inline-block;
+  background-color: #7c3aed;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  text-decoration: none;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-social-link:hover {
+  background-color: #6d28d9;
+  transform: scale(1.05);
+}
+
+.footer-bottom {
+  border-top: 1px solid #4b5563; /* Matches booked seat color */
+  margin-top: 32px;
+  padding-top: 16px;
+  text-align: center;
+}
+
+.footer-copyright {
+  font-size: 14px;
+  color: #d1d5db;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 24px 16px 16px;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-section {
+    margin-bottom: 24px;
+  }
+
+  .footer-title {
+    font-size: 18px;
+  }
+
+  .footer-text,
+  .footer-link,
+  .footer-social-link {
+    font-size: 14px;
+  }
+
+  .footer-social-links {
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .footer-copyright {
+    font-size: 12px;
+  }
+}

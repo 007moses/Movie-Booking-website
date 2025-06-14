@@ -1,12 +1,11 @@
-
-import React, { useState } from 'react';
-import '../Styles/Navbar.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "../Styles/Navbar.css";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isLoggedIn = !!localStorage.getItem('token'); // Check if token exists in localStorage
+  const isLoggedIn = !!localStorage.getItem("token"); // Check if token exists in localStorage
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -24,18 +23,38 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="navbar-menu">
-          <button onClick={() => navigate("/movies")} className="navbar-link">
+          <button
+            onClick={() => {
+              navigate("/");
+              window.scrollTo(0, 0);
+            }}
+            className="navbar-link"
+          >
+            Home
+          </button>
+          <button
+            onClick={() => {
+              navigate("/movies");
+              window.scrollTo(0, 0);
+            }}
+            className="navbar-link"
+          >
             Movies
           </button>
-          <button onClick={() => navigate("/bookings")} className="navbar-link">
-            My Bookings
-          </button>
-          <button onClick={() => navigate("/theaters")} className="navbar-link">
-            Theaters
+          <button
+            onClick={() => {
+              navigate("/About");
+              window.scrollTo(0,0)
+            }
+
+          }
+            className="navbar-link"
+          >
+            About
           </button>
           {isLoggedIn ? (
             <button
-              onClick={() => navigate('/profile')}
+              onClick={() => navigate("/profile")}
               className="navbar-profile-icon"
               aria-label="User Profile"
             >
@@ -55,7 +74,7 @@ const Navbar = () => {
               </svg>
             </button>
           ) : (
-            <button onClick={() => navigate('/login')} className="navbar-login">
+            <button onClick={() => navigate("/login")} className="navbar-login">
               Login
             </button>
           )}
@@ -98,18 +117,24 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="navbar-mobile-menu">
-          <button onClick={() => navigate("/movies")} className="navbar-mobile-link">
+          <button onClick={() => navigate("/")} className="navbar-mobile-link">
+            Home
+          </button>
+          <button
+            onClick={() => navigate("/movies")}
+            className="navbar-mobile-link"
+          >
             Movies
           </button>
-          <button onClick={() => navigate("/bookings")} className="navbar-mobile-link">
-            My Bookings
-          </button>
-          <button onClick={() => navigate("/theaters")} className="navbar-mobile-link">
-            Theaters
+          <button
+            onClick={() => navigate("/About")}
+            className="navbar-mobile-link"
+          >
+            About
           </button>
           {isLoggedIn ? (
             <button
-              onClick={() => navigate('/profile')}
+              onClick={() => navigate("/profile")}
               className="navbar-mobile-profile-icon"
               aria-label="User Profile"
             >
@@ -130,7 +155,10 @@ const Navbar = () => {
               Profile
             </button>
           ) : (
-            <button onClick={() => navigate('/login')} className="navbar-mobile-login">
+            <button
+              onClick={() => navigate("/login")}
+              className="navbar-mobile-login"
+            >
               Login
             </button>
           )}

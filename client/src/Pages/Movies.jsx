@@ -95,7 +95,7 @@ const Movies = () => {
               className="movie-poster"
             />
             <div className="movie-info">
-              <h2 className="movie-title">{movie?.title}</h2>
+              <h3 className="movie-title">{movie?.title}</h3>
               <p className="movie-details">
                 {movie?.genre} | {movie?.duration} | {movie?.rating}
               </p>
