@@ -1,5 +1,6 @@
 import React from 'react';
 import '../Styles/Footer.css';
+import {FaInstagram,FaLinkedin,FaFacebook} from 'react-icons/fa'
 
 const Footer = () => {
   return (
@@ -23,9 +24,9 @@ const Footer = () => {
         <div className="footer-section">
           <h3 className="footer-title">Connect With Us</h3>
           <div className="footer-social-links">
-            <a href="https://www.linkedin.com/in/moses0511/" target='_blank' className="footer-social-link"><i class="bi bi-instagram"></i>LinkedIn</a>
-            <a href="https://www.instagram.com/mosesmoses307/" target='_blank' className="footer-social-link">Instagram</a>
-            <a href="https://www.facebook.com/profile.php?id=100026702372864" target='_blank' className="footer-social-link">Facebook</a>
+            <a href="https://www.linkedin.com/in/moses0511/" target='_blank' className="footer-social-link"><FaLinkedin />LinkedIn</a>
+            <a href="https://www.instagram.com/mosesmoses307/" target='_blank' className="footer-social-link"><FaInstagram/> Instagram</a>
+            <a href="https://www.facebook.com/profile.php?id=100026702372864" target='_blank' className="footer-social-link"><FaFacebook/>Facebook</a>
           </div>
         </div>
         <div className="footer-section">

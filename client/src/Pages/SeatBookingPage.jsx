@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../Styles/SeatBookingPage.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import screenImage from '../assets/Screen.jpg'
 
 const Seat = ({ seatNumber, isSelected, isBooked, onSelect }) => {
@@ -26,7 +26,6 @@ const SeatBooking = () => {
   const rows = ['A', 'B', 'C', 'D', 'E'];
   const seatsPerRow = 8;
   const screens = ['Screen 1', 'Screen 2', 'Screen 3'];
-  const navigate = useNavigate()
   const params = useParams();
   console.log(params.movie, "Movie");
 

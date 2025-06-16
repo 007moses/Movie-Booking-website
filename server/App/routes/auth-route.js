@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { forgotPassword, loginUser, registerUser, resetPassword, getUserDetails, updateUserDetails, sendOtp, verifyOtp } from '../controllers/user-controller.js';
 import authMiddleware from '../../middleware/auth-middleware.js';
+import protect from '../../middleware/auth-middleware.js';
 
 const authRouter = Router();
 
@@ -17,7 +18,7 @@ authRouter.post('/forgot-password', forgotPassword);
 authRouter.post('/reset-password/:token', resetPassword);
 
 // Get User Details (Protected)
-authRouter.get('/user', authMiddleware, getUserDetails);
+authRouter.get('/user', protect, getUserDetails);
 
 // Update User Details (Protected)
 authRouter.post('/user/update', authMiddleware, updateUserDetails);

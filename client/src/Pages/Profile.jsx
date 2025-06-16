@@ -32,27 +32,46 @@ const Profile = () => {
       seats: ['B3'],
     },
   ]);
+  const [users,setUsers] = useState({})
 
   const token = localStorage.getItem("token");
   console.log(token,"token")
-   const fetchUser = () => {
-      const serverRequestParam = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        apiUrl: '/api/auth/profile',
-        apiKey: 'PROFILE',
-      };
-      serverRequest(serverRequestParam);
-      setStartInit(false)
-    };
+
+
+   const UserDetails = () => {
+    if(!token){
+      console.error("No token found, redirecting to login");
+      navigate("/login");
+      return;
+    }
+    const requestConfig = { 
+      method: "GET",
+      apiUrl: "/api/auth/user",
+      apiKey: "GETUSER",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };    
+    serverRequest(requestConfig);
+    setStartInit(false);
+  };
+ function fnResponseforUserDetails (){
+  console.log(responseData,'Moses')
+   }
     console.log(responseData,"Response")
   // Fetch user data on mount
   useEffect(() => {
     if(startInit){
-      fetchUser()
+      UserDetails()
+    }else{
+      if(!isLoading && apiKey){
+        switch(apiKey){
+          case 'GETUSER':
+            fnResponseforUserDetails()
+            break;          
+        }
+      }
     }
   }, [responseData,apiKey,isLoading]);
 

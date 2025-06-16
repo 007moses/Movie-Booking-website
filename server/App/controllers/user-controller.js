@@ -163,6 +163,7 @@ export const resetPassword = asyncHandler(async (req, res) => {
 });
 
 export const getUserDetails = asyncHandler(async (req, res) => {
+  
   const user = await User.findById(req.user._id).select('-password');
   
   if (!user) {

@@ -15,7 +15,7 @@ theaterRouter.post('/',createTheater);
 theaterRouter.get('/', getTheaters);
 
 // @desc    Get a single theater by ID with showtimes (3 movies max, 5 showtimes per screen per day)
-// @route   GET /api/theaters/:id
+// @route   GET /api/theaters/:ida
 // @access  Public
 theaterRouter.get('/:id', getTheaterById);
 
