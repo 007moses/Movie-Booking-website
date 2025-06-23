@@ -1,32 +1,37 @@
 import { Router } from 'express';
-import { createBooking, getUserBookings, getBookingById, updateBookingStatus, cancelBooking } from '../controllers/booking-controller.js';
-// import { protect } from '../../middleware/auth-middleware.js'; // Assuming auth middleware exists
+import { createBooking, getUserBookings, getBookingById, getBookedSeats, updateBookingStatus, cancelBooking } from '../controllers/booking-controller.js';
+import protect from '../../middleware/auth-middleware.js';
 
 const bookingRouter = Router();
 
-// @desc    Create a new booking (validates showtime, screen, and seats; 3 movies max, 5 showtimes per screen per day)
+// @desc    Create a new booking
 // @route   POST /api/bookings
 // @access  Private
-bookingRouter.post('/', createBooking);
+bookingRouter.post('/', protect, createBooking);
 
-// @desc    Get all bookings for a user (includes movie, theater, and screen details)
+// @desc    Get all bookings for a user
 // @route   GET /api/bookings
 // @access  Private
-bookingRouter.get('/', getUserBookings);
+bookingRouter.get('/', protect, getUserBookings);
 
-// @desc    Get a single booking by ID (includes movie, theater, and screen details)
+// @desc    Get a single booking by ID
 // @route   GET /api/bookings/:id
 // @access  Private
-bookingRouter.get('/:id',  getBookingById);
+bookingRouter.get('/:id', protect, getBookingById);
 
-// @desc    Update booking status (e.g., confirm after payment; restricted fields protected)
+// @desc    Get booked seats for a showtime and screen
+// @route   GET /api/bookings/seats
+// @access  Public
+bookingRouter.get('/seats', getBookedSeats);
+
+// @desc    Update booking status
 // @route   PATCH /api/bookings/:id
 // @access  Private
-bookingRouter.patch('/:id', updateBookingStatus);
+bookingRouter.patch('/:id', protect, updateBookingStatus);
 
-// @desc    Cancel a booking (reverts seat availability)
+// @desc    Cancel a booking
 // @route   DELETE /api/bookings/:id
 // @access  Private
-bookingRouter.delete('/:id', cancelBooking);
+bookingRouter.delete('/:id', protect, cancelBooking);
 
 export default bookingRouter;

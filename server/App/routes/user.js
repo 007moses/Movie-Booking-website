@@ -1,32 +1,16 @@
 import { Router } from 'express';
-import { forgotPassword, loginUser, registerUser, resetPassword, getUserDetails, updateUserDetails, sendOtp, verifyOtp } from '../controllers/user-controller.js';
-import authMiddleware from '../../middleware/auth-middleware.js';
+import { registerUser, loginUser, forgotPassword, resetPassword, getUserDetails, updateUserDetails, sendOtp, verifyOtp } from '../controllers/user-controller.js';
 import protect from '../../middleware/auth-middleware.js';
 
-const authRouter = Router();
+const userRouter = Router();
 
-// Register
-authRouter.post('/register', registerUser);
+userRouter.post('/register', registerUser);
+userRouter.post('/login', loginUser);
+userRouter.post('/forgot-password', forgotPassword);
+userRouter.post('/reset-password/:token', resetPassword);
+userRouter.get('/profile', protect, getUserDetails);
+userRouter.put('/profile', protect, updateUserDetails);
+userRouter.post('/send-otp', sendOtp);
+userRouter.post('/verify-otp', verifyOtp);
 
-// Login
-authRouter.post('/login', loginUser);
-
-// Forgot Password
-authRouter.post('/forgot-password', forgotPassword);
-
-// Reset Password
-authRouter.post('/reset-password/:token', resetPassword);
-
-// Get User Details (Protected)
-authRouter.get('/user', protect, getUserDetails);
-
-// Update User Details (Protected)
-authRouter.post('/user/update', protect, updateUserDetails);
-
-// Send OTP (Protected)
-authRouter.post('/send-otp', protect, sendOtp);
-
-// Verify OTP (Protected)
-authRouter.post('/verify-otp', authMiddleware, verifyOtp);
-
-export default authRouter;
+export default userRouter;

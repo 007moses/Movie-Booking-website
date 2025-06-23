@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const { email, password, confirmPassword } = req.body;
+  const { fullName, email, password, confirmPassword } = req.body;
 
   if (!email || !password || !confirmPassword) {
     res.status(400);
@@ -31,7 +31,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   const emailRegex = /^\S+@\S+\.\S+$/;
   const mobileRegex = /^[6-9]\d{9}$/;
-  let userData = { password, fullName: '', mobileNumber: '', email: null };
+  let userData = { password, fullName: fullName || '', mobileNumber: '', email: null };
 
   if (emailRegex.test(email)) {
     const userExists = await User.findOne({ email });
@@ -52,18 +52,25 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new Error('Invalid email or mobile number');
   }
 
-  const user = await User.create(userData);
-  user.password = undefined;
-
-  res.status(201).json({
-    _id: user._id,
-    fullName: user.fullName,
-    email: user.email,
-    mobileNumber: user.mobileNumber,
-    token: generateToken(user._id),
-    message: "User registered successfully",
-    register: true,
-  });
+  try {
+    const user = await User.create(userData);
+    res.status(201).json({
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      mobileNumber: user.mobileNumber,
+      token: generateToken(user._id),
+      message: "User registered successfully",
+      register: true,
+    });
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const errors = Object.values(error.errors).map(err => err.message);
+      res.status(400);
+      throw new Error(`Validation failed: ${errors.join(', ')}`);
+    }
+    throw error;
+  }
 });
 
 export const loginUser = asyncHandler(async (req, res) => {
@@ -163,21 +170,19 @@ export const resetPassword = asyncHandler(async (req, res) => {
 });
 
 export const getUserDetails = asyncHandler(async (req, res) => {
-  
-  const user = await User.findById(req.user._id).select('-password');
-  
+  console.log('Fetching user with ID:', req.user._id);
+  const user = await User.findById(req.user._id).select('fullName email mobileNumber');
   if (!user) {
     res.status(404);
     throw new Error('User not found');
   }
-
   res.status(200).json({
-    _id: user._id,
-    fullName: user.fullName,
-    email: user.email,
-    mobileNumber: user.mobileNumber,
-    message: 'User details retrieved successfully',
-    getUser: true,
+    success: true,
+    data: {
+      name: user.fullName,
+      email: user.email,
+      mobileNumber: user.mobileNumber,
+    },
   });
 });
 

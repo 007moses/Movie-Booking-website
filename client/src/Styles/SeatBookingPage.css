@@ -240,6 +240,38 @@
   font-size: 16px;
   color: #d1d5db;
 }
+.showtime-selection {
+  margin: 20px 0;
+}
+.showtime-selection-title {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+.showtime-buttons {
+  display: flex;
+  gap: 10px;
+}
+.showtime-button {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+}
+.showtime-button-active {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+.total-price {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+.user-info, .ticket-info {
+  font-size: 1em;
+  color: #555;
+  margin: 10px 0;
+}
 
 @keyframes gradientMove {
   0% {

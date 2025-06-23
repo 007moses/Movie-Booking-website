@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "../Styles/LoginSignUp.css";
 import { useNavigate } from "react-router-dom";
 import UseApiFetch from "../API-Method/UseApiFetch";
-
+import { IoEye, IoEyeOff } from 'react-icons/io5';
 
 const SignUpPage = () => {
   const [signupData, setSignupData] = useState({
@@ -14,38 +14,35 @@ const SignUpPage = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const { responseData, isLoading, serverRequest, apiKey, fetchError } = UseApiFetch();
   const navigate = useNavigate();
-  // const images = [Bowl, Bag, Pot, HandBag];
 
   const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
 
   const handleSignupChange = (e) => {
     const { name, value } = e.target;
     setSignupData((prev) => ({ ...prev, [name]: value }));
-    setFormErrors((prev) => ({ ...prev, [name]: "" }));
+    setFormErrors((prev) => ({ ...prev, [name]: "", server: "" }));
   };
 
-  const validate = (mode = "signup") => {
+  const validate = () => {
     const emailRegex = /^([^\s@]+@[^\s@]+\.[^\s@]+|[6-9]\d{9})$/;
     let errors = {};
 
     if (!signupData.email) {
-      errors.email = "Email is required";
+      errors.email = "Email or mobile number is required";
     } else if (!emailRegex.test(signupData.email)) {
       errors.email = "Enter a valid email or mobile number";
     }
 
     if (!signupData.password) {
       errors.password = "Password is required";
-    } else if (signupData.password.length < 6) {
-      errors.password = "Password must be at least 6 characters";
+    } else if (signupData.password.length < 8) {
+      errors.password = "Password must be at least 8 characters";
     }
 
-    if (mode === "signup") {
-      if (!signupData.confirmPassword) {
-        errors.confirmPassword = "Confirm password is required";
-      } else if (signupData.password !== signupData.confirmPassword) {
-        errors.confirmPassword = "Passwords do not match";
-      }
+    if (!signupData.confirmPassword) {
+      errors.confirmPassword = "Confirm password is required";
+    } else if (signupData.password !== signupData.confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
     }
 
     setFormErrors(errors);
@@ -83,30 +80,25 @@ const SignUpPage = () => {
   };
 
   const fnResponseforSignup = () => {
-    console.log(responseData);
-    let IsAuth = responseData.register;
-    if (IsAuth === true) {
+    console.log("Signup response:", responseData);
+    if (responseData?.register && responseData?.token) {
+      localStorage.setItem("token", responseData.token);
+      localStorage.setItem("userId", responseData._id);
+      alert("Registration successful! Please log in.");
       navigate("/login");
-      localStorage.setItem("token", responseData?.token);
-      localStorage.setItem("userId", responseData?._id);
-      console.log("UserID", responseData?._id, "Stored token:", responseData?.token);
     } else {
-      navigate("/signup");
+      setFormErrors((prev) => ({
+        ...prev,
+        server: responseData?.message || "Signup failed",
+      }));
     }
   };
 
   useEffect(() => {
-    if (!isLoading && apiKey === "SIGNUP" && responseData) {
+    if (!isLoading && apiKey === "SIGNUP") {
       fnResponseforSignup();
     }
   }, [isLoading, apiKey, responseData]);
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  //   }, 4000);
-  //   return () => clearInterval(interval);
-  // }, []);
 
   const handleNaviLogin = () => navigate("/login");
 
@@ -114,7 +106,6 @@ const SignUpPage = () => {
     <div className="auth-page">
       <h1 className="auth-title">Sign Up</h1>
       <div className="auth-container">
-       
         <form onSubmit={handleSignupSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="email">Email address / Phone Number</label>
@@ -125,7 +116,7 @@ const SignUpPage = () => {
               value={signupData.email}
               onChange={handleSignupChange}
               className="form-input"
-              placeholder="Enter your mail-Id or Mobile Number here!"
+              placeholder="Enter your email or mobile number"
             />
             {formErrors.email && (
               <span className="error-message">{formErrors.email}</span>
@@ -133,40 +124,45 @@ const SignUpPage = () => {
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
-            <input
-              type={passwordVisible ? "text" : "password"}
-              id="password"
-              name="password"
-              value={signupData.password}
-              onChange={handleSignupChange}
-              className="form-input"
-              placeholder="Enter password"
-            />
-            <span onClick={togglePasswordVisibility} className="toggle-password">
-              {/* <IoEye /> */}
-            </span>
+            <div className="password-container">
+              <input
+                type={passwordVisible ? "text" : "password"}
+                id="password"
+                name="password"
+                value={signupData.password}
+                onChange={handleSignupChange}
+                className="form-input"
+                placeholder="Enter password"
+              />
+              <span onClick={togglePasswordVisibility} className="toggle-password">
+                {passwordVisible ? <IoEyeOff /> : <IoEye />}
+              </span>
+            </div>
             {formErrors.password && (
               <span className="error-message">{formErrors.password}</span>
             )}
           </div>
           <div className="form-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type={passwordVisible ? "text" : "password"}
-              id="confirmPassword"
-              name="confirmPassword"
-              value={signupData.confirmPassword}
-              onChange={handleSignupChange}
-              className="form-input"
-              placeholder="Confirm password"
-            />
-            <span onClick={togglePasswordVisibility} className="toggle-password">
-              {/* <IoEye /> */}
-            </span>
+            <div className="password-container">
+              <input
+                type={passwordVisible ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={signupData.confirmPassword}
+                onChange={handleSignupChange}
+                className="form-input"
+                placeholder="Confirm password"
+              />
+              <span onClick={togglePasswordVisibility} className="toggle-password">
+                {passwordVisible ? <IoEyeOff /> : <IoEye />}
+              </span>
+            </div>
             {formErrors.confirmPassword && (
               <span className="error-message">{formErrors.confirmPassword}</span>
             )}
           </div>
+          {formErrors.server && <p className="error-message">{formErrors.server}</p>}
           {fetchError && <p className="error-message">{fetchError}</p>}
           <button type="submit" className="submit-btn" disabled={isLoading}>
             {isLoading ? "Signing up..." : "Sign Up"}
@@ -174,7 +170,7 @@ const SignUpPage = () => {
           <div className="text-center">
             <p>
               Already have an account?{" "}
-              <span className="signup-link" style={{cursor:"pointer"}} onClick={handleNaviLogin}>
+              <span className="signup-link" style={{ cursor: "pointer" }} onClick={handleNaviLogin}>
                 Login
               </span>
             </p>

@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../Styles/SeatBookingPage.css';
-import {  useParams } from 'react-router-dom';
-import screenImage from '../assets/Screen.jpg'
+import { useParams, useNavigate } from 'react-router-dom';
+import screenImage from '../assets/Screen.jpg';
+import UseApiFetch from '../API-Method/UseApiFetch';
+import MovieData from '../../../server/Data/Movies.json';
+import TheaterData from '../../../server/Data/Theaters.json';
 
 const Seat = ({ seatNumber, isSelected, isBooked, onSelect }) => {
   return (
@@ -17,44 +20,203 @@ const Seat = ({ seatNumber, isSelected, isBooked, onSelect }) => {
 
 const SeatBooking = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const [currentScreen, setCurrentScreen] = useState('Screen 1');
-  const [screenBookedSeats] = useState({
-    'Screen 1': ['A1', 'B3', 'C5'],
-    'Screen 2': ['A2', 'B4', 'D1'],
-    'Screen 3': ['C2', 'E3', 'A5'],
-  });
+  const [selectedShowtime, setSelectedShowtime] = useState(null);
+  const [user, setUser] = useState(null);
+  const [ticketId, setTicketId] = useState(null);
+  const [screenBookedSeats, setScreenBookedSeats] = useState({});
   const rows = ['A', 'B', 'C', 'D', 'E'];
   const seatsPerRow = 8;
-  const screens = ['Screen 1', 'Screen 2', 'Screen 3'];
   const params = useParams();
-  console.log(params.movie, "Movie");
+  const navigate = useNavigate();
+  const { isLoading, serverRequest, fetchError, responseData, apiKey } = UseApiFetch();
 
-  const MovieName = params.movie.split("-").join(" ");
-  console.log(MovieName);
-  const TheaterName = params.theater.split("-").join(" ");
+  const MovieName = params.movie.split('-').join(' ');
+  const TheaterName = params.theater.split('-').join(' ');
+  const movie = MovieData.find((m) => m.title === MovieName);
+  const theater = TheaterData.find((t) => t.name === TheaterName);
+  const showtimes = theater?.showtimes.filter((s) => s.movieTitle === MovieName) || [];
 
-  const handleSeatSelect = (seatNumber) => {
-    setSelectedSeats((prev) =>
-      prev.includes(seatNumber)
-        ? prev.filter((seat) => seat !== seatNumber)
-        : [...prev, seatNumber]
-    );
+  // Seat pricing based on type
+  const seatPricing = {
+    STANDARD: 10,
+    PREMIUM: 15,
+    VIP: 20,
   };
 
-  const handleScreenSelect = (screen) => {
-    setCurrentScreen(screen);
-    setSelectedSeats([]); // Reset selected seats when screen changes
+  // Mock screen data (replace with actual Screen API call if needed)
+  const screens = [
+    {
+      _id: 'screen1',
+      screenNumber: 1,
+      seatLayout: rows.flatMap((row) =>
+        [...Array(seatsPerRow)].map((_, i) => ({
+          seatNumber: `${row}${i + 1}`,
+          seatType: row === 'A' ? 'VIP' : row === 'B' ? 'PREMIUM' : 'STANDARD',
+          isAvailable: true,
+        }))
+      ),
+    },
+    {
+      _id: 'screen2',
+      screenNumber: 2,
+      seatLayout: rows.flatMap((row) =>
+        [...Array(seatsPerRow)].map((_, i) => ({
+          seatNumber: `${row}${i + 1}`,
+          seatType: row === 'A' ? 'VIP' : row === 'B' ? 'PREMIUM' : 'STANDARD',
+          isAvailable: true,
+        }))
+      ),
+    },
+    {
+      _id: 'screen3',
+      screenNumber: 3,
+      seatLayout: rows.flatMap((row) =>
+        [...Array(seatsPerRow)].map((_, i) => ({
+          seatNumber: `${row}${i + 1}`,
+          seatType: row === 'A' ? 'VIP' : row === 'B' ? 'PREMIUM' : 'STANDARD',
+          isAvailable: true,
+        }))
+      ),
+    },
+  ];
+
+  const token = localStorage.getItem('token');
+
+  // Fetch user details
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+    const fetchUser = () => {
+      const requestConfig = {
+        method: 'GET',
+        apiUrl: '/api/auth/profile',
+        apiKey: 'GETUSER',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      };
+      serverRequest(requestConfig);
+    };
+    fetchUser();
+  }, [token, navigate, serverRequest]);
+
+  // Fetch booked seats for selected showtime and screen
+  useEffect(() => {
+    if (selectedShowtime && theater) {
+      const fetchBookedSeats = () => {
+        const requestConfig = {
+          method: 'GET',
+          apiUrl: `/api/bookings/seats?theaterId=${theater._id}&screenId=${selectedShowtime.screenId}&startTime=${selectedShowtime.startTime}`,
+          apiKey: 'GETBOOKEDSEATS',
+        };
+        serverRequest(requestConfig);
+      };
+      fetchBookedSeats();
+    }
+  }, [selectedShowtime, theater, serverRequest]);
+
+  // Handle API responses
+  useEffect(() => {
+    if (!isLoading && responseData) {
+      if (apiKey === 'GETUSER') {
+        const { name, email } = responseData.data;
+        const derivedName = name || (email ? email.split('@')[0] : '');
+        setUser({ name: derivedName, email });
+      } else if (apiKey === 'GETBOOKEDSEATS') {
+        setScreenBookedSeats({
+          [selectedShowtime.screenId]: responseData.bookedSeats || [],
+        });
+      } else if (apiKey === 'CREATEBOOKING') {
+        setTicketId(responseData.data.ticketId);
+        alert(
+          `Booking confirmed! Ticket ID: ${responseData.data.ticketId}\n` +
+          `Movie: ${MovieName}\n` +
+          `Theater: ${TheaterName}\n` +
+          `Screen: ${selectedShowtime.screenNumber}\n` +
+          `Showtime: ${new Date(selectedShowtime.startTime).toLocaleString()}\n` +
+          `Seats: ${responseData.data.seats.map((s) => `${s.seatNumber} (${s.seatType}, $${seatPricing[s.seatType]})`).join(', ')}\n` +
+          `Total Price: $${responseData.data.totalPrice}\n` +
+          `User: ${user.name} (${user.email})`
+        );
+        setSelectedSeats([]);
+      }
+    }
+    if (fetchError && apiKey !== 'GETUSER') {
+      // Suppress GETUSER errors to avoid duplicate alerts
+      console.error(`Error for ${apiKey}:`, fetchError);
+      alert(`Error: ${fetchError}`);
+    }
+    if (fetchError && apiKey === 'GETUSER' && (fetchError.includes('Invalid token') || fetchError.includes('User not found'))) {
+      console.error('Authentication error:', fetchError);
+      localStorage.removeItem('token');
+      navigate('/login');
+    }
+  }, [isLoading, apiKey, responseData, fetchError, user, MovieName, TheaterName, selectedShowtime, seatPricing, navigate]);
+
+  const handleSeatSelect = (seatNumber, seatType) => {
+    setSelectedSeats((prev) => {
+      const seat = { seatNumber, seatType };
+      const seatIndex = prev.findIndex((s) => s.seatNumber === seatNumber);
+      if (seatIndex >= 0) {
+        return prev.filter((_, i) => i !== seatIndex);
+      }
+      return [...prev, seat];
+    });
+  };
+
+  const handleShowtimeSelect = (showtime) => {
+    setSelectedShowtime({
+      startTime: showtime.showDateTime,
+      screenId: screens.find((s) => s.screenNumber === showtime.screenNumber)?._id,
+      screenNumber: showtime.screenNumber,
+    });
+    setSelectedSeats([]);
+  };
+
+  const calculateTotalPrice = () => {
+    return selectedSeats.reduce((total, seat) => total + seatPricing[seat.seatType], 0);
   };
 
   const handleConfirmBooking = () => {
+    if (!user) {
+      alert('Please log in to book seats.');
+      navigate('/login');
+      return;
+    }
+    if (!selectedShowtime) {
+      alert('Please select a showtime.');
+      return;
+    }
     if (selectedSeats.length === 0) {
       alert('Please select at least one seat.');
       return;
     }
-    alert(`Seats ${selectedSeats.join(', ')} booked successfully for ${currentScreen}!`);
-    
-    setSelectedSeats([]);
 
+    const bookingData = {
+      movieId: movie._id,
+      theaterId: theater._id,
+      screenId: selectedShowtime.screenId,
+      showtime: { startTime: selectedShowtime.startTime },
+      seats: selectedSeats,
+      totalPrice: calculateTotalPrice(),
+      user: { name: user.name, email: user.email },
+    };
+
+    const requestConfig = {
+      method: 'POST',
+      apiUrl: '/api/bookings',
+      apiKey: 'CREATEBOOKING',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: bookingData,
+    };
+
+    serverRequest(requestConfig);
   };
 
   return (
@@ -64,69 +226,79 @@ const SeatBooking = () => {
           You’re booking seats at <span className="theater-title">{TheaterName}</span>🍿Enjoy the show!
         </h1>
         <h2 className="movie-title"><span>{MovieName}</span></h2>
-        <div className="screen-selection">
-          <h2 className="screen-selection-title">Select Screen</h2>
-          <div className="screen-buttons">
-            {screens.map((screen) => (
+        {user && <p className="user-info">Booking for: {user.name} ({user.email})</p>}
+        {ticketId && <p className="ticket-info">Ticket ID: {ticketId}</p>}
+        <div className="showtime-selection">
+          <h2 className="showtime-selection-title">Select Showtime</h2>
+          <div className="showtime-buttons">
+            {showtimes.map((showtime, index) => (
               <button
-                key={screen}
-                className={`screen-button ${currentScreen === screen ? 'screen-button-active' : ''}`}
-                onClick={() => handleScreenSelect(screen)}
+                key={index}
+                className={`showtime-button ${selectedShowtime?.startTime === showtime.showDateTime ? 'showtime-button-active' : ''}`}
+                onClick={() => handleShowtimeSelect(showtime)}
               >
-                {screen}
+                {new Date(showtime.showDateTime).toLocaleString()} (Screen {showtime.screenNumber})
               </button>
             ))}
           </div>
         </div>
-        <div className="screen-section">
-          <h2 className="screen-title">{currentScreen}</h2>
-          <img
-            className="screen-image"
-            src={screenImage}
-            alt="Movie Screen"
-          />
-        </div>
-        <div className="seat-grid">
-          {rows.map((row) => (
-            <div key={row} className="seat-row">
-              <span className="row-label">{row}</span>
-              {[...Array(seatsPerRow)].map((_, index) => {
-                const seatNumber = `${row}${index + 1}`;
-                return (
-                  <Seat
-                    key={seatNumber}
-                    seatNumber={seatNumber}
-                    isSelected={selectedSeats.includes(seatNumber)}
-                    isBooked={screenBookedSeats[currentScreen].includes(seatNumber)}
-                    onSelect={handleSeatSelect}
-                  />
-                );
-              })}
+        {selectedShowtime && (
+          <>
+            <div className="screen-section">
+              <h2 className="screen-title">Screen {selectedShowtime.screenNumber}</h2>
+              <img className="screen-image" src={screenImage} alt="Movie Screen" />
             </div>
-          ))}
-        </div>
-        <div className="seat-booking-info">
-          <h3 className="seat-booking-info-title">
-            Selected Seats: {selectedSeats.length > 0 ? selectedSeats.join(', ') : 'None'}
-          </h3>
-          <button className="confirm-button" onClick={handleConfirmBooking}>
-            Confirm Booking
-          </button>
-        </div>
-        <div className="legend">
-          <div className="legend-item">
-            <div className="legend-box legend-box-available"></div>
-            <span className="legend-text">Available</span>
-          </div>
-          <div className="legend-item">
-            <div className="legend-box legend-box-selected"></div>
-            <span className="legend-text">Selected</span>
-          </div>
-          <div className="legend-item">
-            <div className="legend-box legend-box-booked"></div>
-            <span className="legend-text">Booked</span>
-          </div>
-        </div>
+            <div className="seat-grid">
+              {rows.map((row) => (
+                <div key={row} className="seat-row">
+                  <span className="row-label">{row}</span>
+                  {[...Array(seatsPerRow)].map((_, index) => {
+                    const seatNumber = `${row}${index + 1}`;
+                    const seat = screens.find((s) => s._id === selectedShowtime.screenId)?.seatLayout.find(
+                      (s) => s.seatNumber === seatNumber
+                    );
+                    if (!seat) return null;
+                    return (
+                      <Seat
+                        key={seatNumber}
+                        seatNumber={seatNumber}
+                        isSelected={selectedSeats.some((s) => s.seatNumber === seatNumber)}
+                        isBooked={screenBookedSeats[selectedShowtime.screenId]?.includes(seatNumber)}
+                        onSelect={() => handleSeatSelect(seatNumber, seat.seatType)}
+                      />
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+            <div className="seat-booking-info">
+              <h3 className="seat-booking-info-title">
+                Selected Seats:{' '}
+                {selectedSeats.length > 0
+                  ? selectedSeats.map((s) => `${s.seatNumber} (${s.seatType}, $${seatPricing[s.seatType]})`).join(', ')
+                  : 'None'}
+              </h3>
+              <h3 className="total-price">Total Price: ${calculateTotalPrice()}</h3>
+              <button className="confirm-button" onClick={handleConfirmBooking} disabled={isLoading}>
+                {isLoading && apiKey === 'CREATEBOOKING' ? 'Booking...' : 'Confirm Booking'}
+              </button>
+            </div>
+            <div className="legend">
+              <div className="legend-item">
+                <div className="legend-box legend-box-available"></div>
+                <span className="legend-text">Available</span>
+              </div>
+              <div className="legend-item">
+                <div className="legend-box legend-box-selected"></div>
+                <span className="legend-text">Selected</span>
+              </div>
+              <div className="legend-item">
+                <div className="legend-box legend-box-booked"></div>
+                <span className="legend-text">Booked</span>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

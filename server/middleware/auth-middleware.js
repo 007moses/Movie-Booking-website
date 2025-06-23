@@ -9,7 +9,7 @@ const protect = asyncHandler(async (req, res, next) => {
       throw new Error('No token provided');
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { userId: decoded.id };
+    req.user = { _id: decoded.id };
     next();
   } catch (error) {
     res.status(401);

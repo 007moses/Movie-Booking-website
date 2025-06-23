@@ -5,86 +5,84 @@ import UseApiFetch from '../API-Method/UseApiFetch';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ email: '', phone: '' });
-  const [formData, setFormData] = useState({ email: '', phone: '' });
+  const [user, setUser] = useState({ name: '', email: '', mobileNumber: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', mobileNumber: '' });
   const [otpData, setOtpData] = useState({ otp: '' });
-  const [isEditing, setIsEditing] = useState(false);
+  const [editingField, setEditingField] = useState(null);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
-  const [startInit, setStartInit] = useState(true);
-
+  const [recentBookings, setRecentBookings] = useState([]);
   const { responseData, isLoading, serverRequest, apiKey, fetchError } = UseApiFetch();
 
-  // Sample recent bookings (replace with API call if needed)
-  const [recentBookings, setRecentBookings] = useState([
-    {
-      id: 1,
-      movieTitle: 'Interstellar',
-      theater: 'City Cinema',
-      showtime: '2025-04-28 18:00',
-      seats: ['A1', 'A2'],
-    },
-    {
-      id: 2,
-      movieTitle: 'The Dark Knight',
-      theater: 'Starplex',
-      showtime: '2025-04-29 20:00',
-      seats: ['B3'],
-    },
-  ]);
-  const [users,setUsers] = useState({})
+  const token = localStorage.getItem('token');
 
-  const token = localStorage.getItem("token");
-  console.log(token,"token")
-
-
-   const UserDetails = () => {
-    if(!token){
-      console.error("No token found, redirecting to login");
-      navigate("/login");
+  // Fetch user details
+  const fetchUserDetails = () => {
+    if (!token) {
+      console.error('No token found, redirecting to login');
+      navigate('/login');
       return;
     }
-    const requestConfig = { 
-      method: "GET",
-      apiUrl: "/api/auth/user",
-      apiKey: "GETUSER",
+    const requestConfig = {
+      method: 'GET',
+      apiUrl: '/api/auth/profile',
+      apiKey: 'GETUSER',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-    };    
+    };
     serverRequest(requestConfig);
-    setStartInit(false);
   };
- function fnResponseforUserDetails (){
-  console.log(responseData,'Moses')
-   }
-    console.log(responseData,"Response")
-  // Fetch user data on mount
-  useEffect(() => {
-    if(startInit){
-      UserDetails()
-    }else{
-      if(!isLoading && apiKey){
-        switch(apiKey){
-          case 'GETUSER':
-            fnResponseforUserDetails()
-            break;          
-        }
+
+  // Fetch recent bookings
+  const fetchRecentBookings = () => {
+    if (!token) {
+      console.error('No token found, redirecting to login');
+      navigate('/login');
+      return;
+    }
+    const requestConfig = {
+      method: 'GET',
+      apiUrl: '/api/bookings',
+      apiKey: 'GETBOOKINGS',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    };
+    serverRequest(requestConfig);
+  };
+
+  // Handle user details response
+  const handleUserDetailsResponse = () => {
+    console.log('User details response:', responseData);
+    if (responseData?.success && responseData.data) {
+      const { name, email, mobileNumber } = responseData.data;
+      const derivedName = name || (email ? email.split('@')[0] : '');
+      const derivedMobileNumber = mobileNumber || '1234567890';
+      setUser({ name: derivedName, email, mobileNumber: derivedMobileNumber });
+      setFormData({ name: derivedName, email, mobileNumber: derivedMobileNumber });
+    } else if (responseData?.message) {
+      console.error('Error fetching user details:', responseData.message);
+      alert(responseData.message);
+      if (responseData.message === 'Invalid token' || responseData.message === 'User not found') {
+        localStorage.removeItem('token');
+        navigate('/login');
       }
     }
-  }, [responseData,apiKey,isLoading]);
+  };
 
-  // Handle user data response
-  useEffect(() => {
-    if (!isLoading && apiKey === 'PROFILE' && responseData) {
-      setUser(responseData);
-      setFormData({ email: responseData.email, phone: responseData.phone });
+  // Handle bookings response
+  const handleBookingsResponse = () => {
+    console.log('Bookings response:', responseData);
+    if (responseData?.success && responseData.data) {
+      setRecentBookings(responseData.data);
+    } else if (responseData?.message) {
+      console.error('Error fetching bookings:', responseData.message);
+      alert(responseData.message);
     }
-    if (fetchError && apiKey === 'PROFILE') {
-      console.error('Error fetching user:', fetchError);
-    }
-  }, [isLoading, apiKey, responseData, fetchError]);
+  };
 
   // Handle OTP request
   const handleSendOTP = (e) => {
@@ -93,28 +91,14 @@ const Profile = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${token}`,
       },
       body: { email: user.email },
-      apiUrl: '/api/user/send-otp',
+      apiUrl: '/api/auth/send-otp',
       apiKey: 'SEND_OTP',
     };
     serverRequest(serverRequestParam);
   };
-
-  // Handle OTP response
-  useEffect(() => {
-    if (!isLoading && apiKey === 'SEND_OTP' && responseData) {
-      if (responseData.sendOTP) {
-        setIsOtpSent(true);
-        alert('OTP sent to your email!');
-      }
-    }
-    if (fetchError && apiKey === 'SEND_OTP') {
-      console.error('Error sending OTP:', fetchError);
-      alert('Failed to send OTP.');
-    }
-  }, [isLoading, apiKey, responseData, fetchError]);
 
   // Handle OTP verification
   const handleVerifyOTP = (e) => {
@@ -123,28 +107,14 @@ const Profile = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${token}`,
       },
       body: { email: user.email, otp: otpData.otp },
-      apiUrl: '/api/user/verify-otp',
+      apiUrl: '/api/auth/verify-otp',
       apiKey: 'VERIFY_OTP',
     };
     serverRequest(serverRequestParam);
   };
-
-  // Handle OTP verification response
-  useEffect(() => {
-    if (!isLoading && apiKey === 'VERIFY_OTP' && responseData) {
-      if (responseData.verifyOTP) {
-        setIsOtpVerified(true);
-        alert('OTP verified successfully!');
-      }
-    }
-    if (fetchError && apiKey === 'VERIFY_OTP') {
-      console.error('Error verifying OTP:', fetchError);
-      alert('Invalid or expired OTP.');
-    }
-  }, [isLoading, apiKey, responseData, fetchError]);
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -158,17 +128,29 @@ const Profile = () => {
     setOtpData({ ...otpData, [name]: value });
   };
 
-  // Handle profile update
-  const handleUpdateProfile = (e) => {
+  // Handle edit button click
+  const handleEditClick = (field) => {
+    setEditingField(field);
+    setIsOtpSent(false);
+    setIsOtpVerified(false);
+    setOtpData({ otp: '' });
+  };
+
+  // Handle save button click
+  const handleSaveClick = (e, field) => {
     e.preventDefault();
+    if (!isOtpVerified) {
+      alert('Please verify OTP before saving changes.');
+      return;
+    }
     const serverRequestParam = {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${token}`,
       },
-      body: formData,
-      apiUrl: '/api/user/profile',
+      body: { [field === 'name' ? 'fullName' : field]: formData[field] },
+      apiUrl: '/api/auth/profile',
       apiKey: 'UPDATE_PROFILE',
     };
     serverRequest(serverRequestParam);
@@ -176,24 +158,75 @@ const Profile = () => {
 
   // Handle profile update response
   useEffect(() => {
-    if (!isLoading && apiKey === 'UPDATE_PROFILE' && responseData) {
-      setUser(responseData);
-      setIsEditing(false);
-      setIsOtpVerified(false);
-      setIsOtpSent(false);
-      setOtpData({ otp: '' });
-      alert('Profile updated successfully!');
+    if (!token) {
+      navigate('/login');
+      return;
     }
-    if (fetchError && apiKey === 'UPDATE_PROFILE') {
-      console.error('Error updating profile:', fetchError);
-      alert('Failed to update profile.');
+    if (!user.email) {
+      fetchUserDetails();
     }
-  }, [isLoading, apiKey, responseData, fetchError]);
+    if (!recentBookings.length) {
+      fetchRecentBookings();
+    }
+    if (!isLoading && apiKey) {
+      switch (apiKey) {
+        case 'GETUSER':
+          handleUserDetailsResponse();
+          break;
+        case 'GETBOOKINGS':
+          handleBookingsResponse();
+          break;
+        case 'SEND_OTP':
+          if (responseData?.sendOtp) {
+            setIsOtpSent(true);
+            alert('OTP sent to your email!');
+          }
+          break;
+        case 'VERIFY_OTP':
+          if (responseData?.verifyOtp) {
+            setIsOtpVerified(true);
+            alert('OTP verified successfully!');
+          }
+          break;
+        case 'UPDATE_PROFILE':
+          if (responseData) {
+            const { fullName, email, mobileNumber } = responseData;
+            const derivedName = fullName || (email ? email.split('@')[0] : '');
+            const derivedMobileNumber = mobileNumber || '1234567890';
+            setUser({ name: derivedName, email, mobileNumber: derivedMobileNumber });
+            setFormData({ name: derivedName, email, mobileNumber: derivedMobileNumber });
+            setEditingField(null);
+            setIsOtpSent(false);
+            setIsOtpVerified(false);
+            setOtpData({ otp: '' });
+            alert('Profile updated successfully!');
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    if (fetchError && apiKey) {
+      console.error(`Error for ${apiKey}:`, fetchError);
+      alert(`Failed to ${apiKey === 'GETUSER' ? 'fetch profile' : apiKey === 'GETBOOKINGS' ? 'fetch bookings' : apiKey === 'SEND_OTP' ? 'send OTP' : apiKey === 'VERIFY_OTP' ? 'verify OTP' : 'update profile'}: ${fetchError}`);
+      if (apiKey === 'GETUSER' && (fetchError.includes('Invalid token') || fetchError.includes('User not found'))) {
+        localStorage.removeItem('token');
+        navigate('/login');
+      }
+    }
+  }, [isLoading, apiKey, responseData, fetchError, token, navigate, user.email, recentBookings.length]);
 
   // Handle logout
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
+  };
+
+  // Seat pricing for display in bookings
+  const seatPricing = {
+    STANDARD: 10,
+    PREMIUM: 15,
+    VIP: 20,
   };
 
   return (
@@ -203,21 +236,29 @@ const Profile = () => {
         {/* Profile Info Section */}
         <div className="profile-info">
           <h2 className="section-title">Personal Information</h2>
-          {!isEditing ? (
+          {isLoading && apiKey === 'GETUSER' && <p>Loading profile...</p>}
+          {editingField === null ? (
             <div className="profile-details">
-              <p><strong>Email:</strong> {user.email || 'Not provided'}</p>
-              <p><strong>Phone:</strong> {user.phone || 'Not provided'}</p>
-              <div className="profile-actions">
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="edit-btn"
-                >
-                  Edit Profile
+              <div className="field-group">
+                <p><strong>Name:</strong> {user.name || 'Not provided'}</p>
+                <button onClick={() => handleEditClick('name')} className="edit-btn">
+                  Edit
                 </button>
-                <button
-                  onClick={handleLogout}
-                  className="logout-btn"
-                >
+              </div>
+              <div className="field-group">
+                <p><strong>Email:</strong> {user.email || 'Not provided'}</p>
+                <button onClick={() => handleEditClick('email')} className="edit-btn">
+                  Edit
+                </button>
+              </div>
+              <div className="field-group">
+                <p><strong>Phone:</strong> {user.mobileNumber || 'Not provided'}</p>
+                <button onClick={() => handleEditClick('mobileNumber')} className="edit-btn">
+                  Edit
+                </button>
+              </div>
+              <div className="profile-actions">
+                <button onClick={handleLogout} className="logout-btn">
                   Logout
                 </button>
               </div>
@@ -244,7 +285,7 @@ const Profile = () => {
                 <button
                   type="button"
                   className="cancel-btn"
-                  onClick={() => setIsEditing(false)}
+                  onClick={() => setEditingField(null)}
                 >
                   Cancel
                 </button>
@@ -278,6 +319,7 @@ const Profile = () => {
                   onClick={() => {
                     setIsOtpSent(false);
                     setOtpData({ otp: '' });
+                    setEditingField(null);
                   }}
                 >
                   Cancel
@@ -285,28 +327,18 @@ const Profile = () => {
               </div>
             </form>
           ) : (
-            <form onSubmit={handleUpdateProfile} className="profile-form">
+            <form onSubmit={(e) => handleSaveClick(e, editingField)} className="profile-form">
               <div className="form-group">
-                <label htmlFor="email">Email:</label>
+                <label htmlFor={editingField}>{editingField.charAt(0).toUpperCase() + editingField.slice(1)}:</label>
                 <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
+                  type={editingField === 'email' ? 'email' : editingField === 'mobileNumber' ? 'tel' : 'text'}
+                  id={editingField}
+                  name={editingField}
+                  value={formData[editingField]}
                   onChange={handleInputChange}
                   className="form-input"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="phone">Phone:</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  className="form-input"
+                  placeholder={`Enter your ${editingField}`}
+                  required={editingField === 'email'}
                 />
               </div>
               {fetchError && apiKey === 'UPDATE_PROFILE' && (
@@ -314,16 +346,17 @@ const Profile = () => {
               )}
               <div className="form-actions">
                 <button type="submit" className="save-btn" disabled={isLoading}>
-                  Save Changes
+                  Save
                 </button>
                 <button
                   type="button"
                   className="cancel-btn"
                   onClick={() => {
-                    setIsEditing(false);
+                    setEditingField(null);
                     setIsOtpSent(false);
                     setIsOtpVerified(false);
                     setOtpData({ otp: '' });
+                    setFormData({ ...user });
                   }}
                 >
                   Cancel
@@ -336,6 +369,7 @@ const Profile = () => {
         {/* Recent Bookings Section */}
         <div className="recent-bookings">
           <h2 className="section-title">Recent Bookings</h2>
+          {isLoading && apiKey === 'GETBOOKINGS' && <p>Loading bookings...</p>}
           {recentBookings.length === 0 ? (
             <p className="no-bookings">No recent bookings found.</p>
           ) : (
@@ -347,10 +381,23 @@ const Profile = () => {
                     <strong>Theater:</strong> {booking.theater}
                   </p>
                   <p className="booking-details">
-                    <strong>Showtime:</strong> {booking.showtime}
+                    <strong>Screen:</strong> {booking.screenNumber}
                   </p>
                   <p className="booking-details">
-                    <strong>Seats:</strong> {booking.seats.join(', ')}
+                    <strong>Showtime:</strong> {new Date(booking.showtime).toLocaleString()}
+                  </p>
+                  <p className="booking-details">
+                    <strong>Seats:</strong>{' '}
+                    {booking.seats.map((s) => `${s.seatNumber} (${s.seatType}, $${seatPricing[s.seatType]})`).join(', ')}
+                  </p>
+                  <p className="booking-details">
+                    <strong>Total Price:</strong> ${booking.totalPrice}
+                  </p>
+                  <p className="booking-details">
+                    <strong>Ticket ID:</strong> {booking.ticketId}
+                  </p>
+                  <p className="booking-details">
+                    <strong>Status:</strong> {booking.status}
                   </p>
                 </div>
               ))}
