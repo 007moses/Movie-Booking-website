@@ -77,7 +77,7 @@ const Profile = () => {
   const handleBookingsResponse = () => {
     console.log('Bookings response:', responseData);
     if (responseData?.success && responseData.data) {
-      setRecentBookings(responseData.data);
+      setRecentBookings(Array.isArray(responseData.data) ? responseData.data : []);
     } else if (responseData?.message) {
       console.error('Error fetching bookings:', responseData.message);
       alert(responseData.message);
@@ -156,19 +156,19 @@ const Profile = () => {
     serverRequest(serverRequestParam);
   };
 
-  // Handle profile update response
   useEffect(() => {
     if (!token) {
       navigate('/login');
       return;
     }
-    if (!user.email) {
-      fetchUserDetails();
-    }
-    if (!recentBookings.length) {
-      fetchRecentBookings();
-    }
-    if (!isLoading && apiKey) {
+    // Fetch user details and recent bookings on component mount
+    fetchUserDetails();
+    fetchRecentBookings();
+  }, [token, navigate]); // Dependencies ensure this runs once on mount or token change
+
+  // Handle responses from API calls
+  useEffect(() => {
+    if (!isLoading && apiKey && responseData) {
       switch (apiKey) {
         case 'GETUSER':
           handleUserDetailsResponse();
@@ -198,7 +198,6 @@ const Profile = () => {
             setEditingField(null);
             setIsOtpSent(false);
             setIsOtpVerified(false);
-            setOtpData({ otp: '' });
             alert('Profile updated successfully!');
           }
           break;
@@ -206,15 +205,9 @@ const Profile = () => {
           break;
       }
     }
-    if (fetchError && apiKey) {
-      console.error(`Error for ${apiKey}:`, fetchError);
-      alert(`Failed to ${apiKey === 'GETUSER' ? 'fetch profile' : apiKey === 'GETBOOKINGS' ? 'fetch bookings' : apiKey === 'SEND_OTP' ? 'send OTP' : apiKey === 'VERIFY_OTP' ? 'verify OTP' : 'update profile'}: ${fetchError}`);
-      if (apiKey === 'GETUSER' && (fetchError.includes('Invalid token') || fetchError.includes('User not found'))) {
-        localStorage.removeItem('token');
-        navigate('/login');
-      }
-    }
-  }, [isLoading, apiKey, responseData, fetchError, token, navigate, user.email, recentBookings.length]);
+  }, [isLoading, apiKey, responseData, fetchError, navigate]); // Dependencies ensure this runs when API response is ready
+
+
 
   // Handle logout
   const handleLogout = () => {

@@ -112,7 +112,7 @@ const SeatBooking = () => {
           apiUrl: `/api/bookings/seats?theaterId=${theater._id}&screenId=${selectedShowtime.screenId}&startTime=${selectedShowtime.startTime}`,
           apiKey: 'GETBOOKEDSEATS',
         };
-        serverRequest(requestConfig);
+        serverRequest(requestConfig, false); // No authentication needed for public endpoint
       };
       fetchBookedSeats();
     }
@@ -131,16 +131,19 @@ const SeatBooking = () => {
         });
       } else if (apiKey === 'CREATEBOOKING') {
         setTicketId(responseData.data.ticketId);
-        alert(
-          `Booking confirmed! Ticket ID: ${responseData.data.ticketId}\n` +
-          `Movie: ${MovieName}\n` +
-          `Theater: ${TheaterName}\n` +
-          `Screen: ${selectedShowtime.screenNumber}\n` +
-          `Showtime: ${new Date(selectedShowtime.startTime).toLocaleString()}\n` +
-          `Seats: ${responseData.data.seats.map((s) => `${s.seatNumber} (${s.seatType}, $${seatPricing[s.seatType]})`).join(', ')}\n` +
-          `Total Price: $${responseData.data.totalPrice}\n` +
-          `User: ${user.name} (${user.email})`
-        );
+        navigate('/ticket', {
+          state: {
+            ticketId: responseData.data.ticketId,
+            movieName: MovieName,
+            theaterName: TheaterName,
+            screenNumber: selectedShowtime.screenNumber,
+            showtime: new Date(selectedShowtime.startTime).toLocaleString(),
+            seats: responseData.data.seats.map((s) => `${s.seatNumber} (${s.seatType}, $${seatPricing[s.seatType]})`),
+            totalPrice: responseData.data.totalPrice,
+            userName: user.name,
+            userEmail: user.email,
+          },
+        });
         setSelectedSeats([]);
       }
     }
@@ -194,6 +197,24 @@ const SeatBooking = () => {
       alert('Please select at least one seat.');
       return;
     }
+
+    const bookingData = {
+      movieId: movie._id,
+      theaterId: theater._id,
+      screenId: selectedShowtime.screenId,
+      showtime: { startTime: selectedShowtime.startTime },
+      seats: selectedSeats,
+      totalPrice: calculateTotalPrice(),
+    };
+
+    const requestConfig = {
+      method: 'POST',
+      apiUrl: '/api/bookings',
+      apiKey: 'CREATEBOOKING',
+      body: bookingData,
+    };
+    serverRequest(requestConfig);
+  };
 
     const bookingData = {
       movieId: movie._id,

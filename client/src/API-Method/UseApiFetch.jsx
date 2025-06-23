@@ -8,7 +8,7 @@ const UseApiFetch = () => {
 
   const baseUrl = import.meta.env.VITE_API_URL;
 
-  function serverRequest(serverRequestParam) {
+  function serverRequest(serverRequestParam, isAuthenticated = true) {
     const fetchUrl = baseUrl + serverRequestParam.apiUrl;
     const apiKeyParam = serverRequestParam.apiKey;
 
@@ -16,6 +16,14 @@ const UseApiFetch = () => {
       method: serverRequestParam.method || "GET",
       headers: serverRequestParam.headers || { "Content-Type": "application/json" },
     };
+
+    const token = localStorage.getItem('token');
+    if (isAuthenticated && token) {
+      requestOptions.headers = {
+        ...requestOptions.headers,
+        Authorization: `Bearer ${token}`,
+      };
+    }
 
     if (serverRequestParam.method !== "GET" && serverRequestParam.body) {
       requestOptions.body = JSON.stringify(serverRequestParam.body);

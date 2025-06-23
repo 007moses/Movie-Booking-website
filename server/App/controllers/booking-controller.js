@@ -2,7 +2,9 @@ import Booking from '../models/Bookings.js';
 import Movie from '../models/movie.js';
 import Theater from '../models/Theater.js';
 import Screen from '../models/Screen.js';
+import Booking from '../models/Booking.js';
 import asyncHandler from 'express-async-handler';
+import { v4 as uuidv4 } from 'uuid';
 
 
 // @desc    Create a new booking

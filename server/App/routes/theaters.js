@@ -1,8 +1,8 @@
-import express from 'express';
 import { createTheater, getTheaters, getTheaterById, updateTheater, deleteTheater } from '../controllers/theater-controller.js';
+import { Router } from 'express';
 // import { protect, admin } from '../../middleware/auth-middleware.js'; // Assuming auth middleware exists
 
-const theaterRouter = express.Router();
+const theaterRouter = Router();
 
 // @desc    Create a new theater (max 5 screens, 3 unique movies, 5 showtimes per screen per day)
 // @route   POST /api/theaters

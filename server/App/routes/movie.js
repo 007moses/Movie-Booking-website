@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
 import {getAllMovies,getMovieById,createMovie,updateMovie,deleteMovie} from '../controllers/movie-controlller.js'
 
 const MoviesRouter = Router();
