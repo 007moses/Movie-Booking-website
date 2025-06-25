@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import "../Styles/LoginSignUp.css";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import UseApiFetch from "../API-Method/UseApiFetch";
+import { setUser } from "../Redux/Slices/userSlice.js";
+import "../Styles/LoginSignUp.css";
 
 const Login = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
@@ -9,6 +11,7 @@ const Login = () => {
   const [reRender, setReRender] = useState(false);
   const { responseData, isLoading, serverRequest, apiKey, fetchError } = UseApiFetch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Handle input changes
   const handleLoginChange = (e) => {
@@ -54,7 +57,7 @@ const Login = () => {
       password: loginData?.password,
     };
 
-    console.log(obj_loginParams);
+    console.log('Login request payload:', obj_loginParams);
     const serverRequestParam = {
       method: "POST",
       headers: {  
@@ -69,26 +72,40 @@ const Login = () => {
   };
 
   const fnResponseforLogin = () => {
-    console.log(responseData);
-    let IsAuth = responseData.login;
-    if (IsAuth === true) {
-      navigate("/");
-      localStorage.setItem("token", responseData.token);
-      console.log(responseData.token,"token")
-      // console.log(responseData?.token, "UserID");
+    console.log('Login response:', responseData);
+    console.log(responseData.token)
+    console.log(responseData._id,'id')
+    if (responseData?.success || responseData?.login) {
+      if (responseData.token) {
+        localStorage.setItem("token", responseData.token);
+        console.log('Token stored:', responseData.token.substring(0, 10) + '...');
+        dispatch(setUser({
+          user: {
+            _id: responseData._id,
+            name: responseData.name,
+            email: responseData.email,
+          },
+          token: responseData.token,
+        }));
+        navigate("/");
+      } else {
+        console.error('No token or user in response:', responseData);
+        setFormErrors({ server: "Login succeeded but no token or user data provided" });
+        setReRender(!reRender);
+      }
     } else {
+      const errorMsg = fetchError || responseData?.message || "Login failed. Please check your credentials.";
+      console.error('Login error:', errorMsg);
+      setFormErrors({ server: errorMsg });
       setReRender(!reRender);
-      navigate("/login");
     }
   };
-
-  console.log(localStorage.getItem('token'))
 
   useEffect(() => {
     if (!isLoading && apiKey === "LOGIN" && responseData) {
       fnResponseforLogin();
     }
-  }, [isLoading, apiKey, responseData]);
+  }, [isLoading, apiKey, responseData, dispatch]);
 
   const handleNaviSignup = () => navigate("/signup");
   const handleNaviForgotPassword = () => navigate("/forgotpassword");
@@ -133,6 +150,7 @@ const Login = () => {
               Forgot password
             </p>
           </div>
+          {formErrors.server && <p className="error-message">{formErrors.server}</p>}
           {fetchError && <p className="error-message">{fetchError}</p>}
           <button type="submit" className="submit-btn" disabled={isLoading}>
             {isLoading ? "Logging in..." : "Login"}

@@ -23,7 +23,7 @@ const createBooking = asyncHandler(async (req, res) => {
     !totalPrice ||
     !user ||
     !user.userId ||
-    !user.name ||
+    !user.name || 
     !user.email
   ) {
     res.status(400);
@@ -71,7 +71,7 @@ const createBooking = asyncHandler(async (req, res) => {
 });
 
 const getBookedSeats = asyncHandler(async (req, res) => {
-  const { screenNumber, showtime } = req.query;
+  const { screenNumber, showtime } = req.body;
 
   if (!screenNumber || !showtime) {
     res.status(400);
@@ -91,4 +91,32 @@ const getBookedSeats = asyncHandler(async (req, res) => {
   });
 });
 
-export { createBooking, getBookedSeats };
+const getUserBookings = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const bookings = await Booking.find({ 'user.userId': userId });
+
+  res.status(200).json({
+    success: true,
+    data: bookings,
+  });
+});
+
+const getBookingById = asyncHandler(async (req, res) => {
+  const { ticketId } = req.params;
+  const userId = req.user._id;
+
+  const booking = await Booking.findOne({ ticketId, 'user.userId': userId });
+
+  if (!booking) {
+    res.status(404);
+    throw new Error('Booking not found');
+  }
+
+  res.status(200).json({
+    success: true,
+    data: booking,
+  });
+});
+
+export { createBooking, getBookedSeats, getUserBookings, getBookingById };

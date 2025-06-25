@@ -1,4 +1,32 @@
 /* Profile.css */
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-card {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.booking-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.booking-card p {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.booking-card p strong {
+  color: #333;
+}
 .profile-page {
   background: linear-gradient(180deg, #0d0d0d 0%, #1a1a1a 100%);
   min-height: 100vh;

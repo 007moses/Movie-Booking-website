@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import theatersReducer from './Slices/theatersSlice';
+import userReducer from './Slices/userSlice.js';
 
 export const store = configureStore({
   reducer: {
-    theaters: theatersReducer,
+    user: userReducer,
   },
 });

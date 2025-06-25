@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import '../Styles/Profile.css';
 import { useNavigate } from 'react-router-dom';
 import UseApiFetch from '../API-Method/UseApiFetch';
-import {FaRegEdit,FaSave} from 'react-icons/fa'
-// import { FaRegEdit, FiSave } from 'react-icons/fi';
+import { FaRegEdit, FaSave } from 'react-icons/fa';
+import '../Styles/Profile.css';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { isLoading, fetchError, responseData, apiKey, serverRequest } = UseApiFetch();
+  const { isLoading, errorMessage: fetchError, responseData, apiKey, serverRequest } = UseApiFetch();
 
   const [userData, setUserData] = useState({
     fullName: '',
     email: '',
-    mobileNumber: '',
+    phoneNumber: '',
   });
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    mobileNumber: '',
+    phoneNumber: '',
     password: '',
     confirmPassword: '',
   });
   const [editMode, setEditMode] = useState({
     fullName: false,
     email: false,
-    mobileNumber: false,
+    phoneNumber: false,
     password: false,
   });
   const [errors, setErrors] = useState({
     fullName: '',
     email: '',
-    mobileNumber: '',
+    phoneNumber: '',
     password: '',
     confirmPassword: '',
     otp: '',
+    bookings: '',
   });
   const [otpState, setOtpState] = useState({
     isOtpSent: false,
@@ -41,17 +41,16 @@ const Profile = () => {
     isOtpVerified: false,
   });
   const [otpMessage, setOtpMessage] = useState('');
+  const [bookings, setBookings] = useState([]);
 
   const token = localStorage.getItem('token');
 
-  // Validation functions (aligned with LoginSecurity)
-  const validateFullName = (fullName) => {
-    if (!fullName) return 'Full name cannot be empty';
-    if (fullName.length < 2) return 'Full name must be at least 2 characters long';
-    if (fullName.length > 50) return 'Full name cannot exceed 50 characters';
+  const validateFullName = (name) => {
+    if (!name) return 'Full name cannot be empty';
+    if (name.length < 2) return 'Full name must be at least 2 characters';
+    if (name.length > 50) return 'Full name cannot exceed 50 characters';
     const nameRegex = /^[a-zA-Z\s'-]+$/;
-    if (!nameRegex.test(fullName))
-      return "Full name can only contain letters, spaces, hyphens, or apostrophes";
+    if (!nameRegex.test(name)) return 'Full name can only contain letters, spaces, hyphens, or apostrophes';
     return '';
   };
 
@@ -63,11 +62,11 @@ const Profile = () => {
     return '';
   };
 
-  const validateMobileNumber = (mobileNumber) => {
-    if (!mobileNumber) return '';
-    const cleanedNumber = mobileNumber.replace(/^\+91\s?-?/, '');
-    const mobileRegex = /^[1-9]\d{9}$/;
-    if (!mobileRegex.test(cleanedNumber)) return 'Please enter a valid mobile number';
+  const validatePhoneNumber = (phoneNumber) => {
+    if (!phoneNumber) return '';
+    const cleanedNumber = phoneNumber.replace(/^\+91\s?-?/, '');
+    const phoneRegex = /^[1-9]\d{9}$/;
+    if (!phoneRegex.test(cleanedNumber)) return 'Please enter a valid phone number';
     return '';
   };
 
@@ -87,14 +86,12 @@ const Profile = () => {
     return '';
   };
 
-  // Fetch user details
   const fetchUserDetails = () => {
     if (!token) {
-      console.error('No token found, redirecting to login');
       navigate('/login');
       return;
     }
-    const requestConfig = {
+    serverRequest({
       method: 'GET',
       apiUrl: '/api/auth/profile',
       apiKey: 'GETUSER',
@@ -102,48 +99,64 @@ const Profile = () => {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-    };
-    console.log('Fetching user details:', JSON.stringify(requestConfig, null, 2));
-    serverRequest(requestConfig);
+    });
   };
 
-  // Handle user details response
+  const fetchUserBookings = () => {
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+    serverRequest({
+      method: 'GET',
+      apiUrl: '/api/bookings/user',
+      apiKey: 'GET_BOOKINGS',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+  };
+
   const handleUserDetailsResponse = () => {
-    console.log('User details response:', responseData, 'Error:', fetchError);
     if (responseData?.success && responseData.data) {
-      const { name, email, mobileNumber } = responseData.data;
+      const { name, email, phoneNumber } = responseData.data;
       const derivedFullName = name || (email ? email.split('@')[0] : 'User');
-      const derivedMobileNumber = mobileNumber || '1234567890';
+      const derivedPhoneNumber = phoneNumber || '1234567890';
       const newUserData = {
         fullName: derivedFullName,
         email,
-        mobileNumber: `+91 ${derivedMobileNumber}`,
+        phoneNumber: `+91 ${derivedPhoneNumber}`,
       };
       setUserData(newUserData);
       setFormData({
         ...formData,
         fullName: derivedFullName,
         email,
-        mobileNumber: `+91 ${derivedMobileNumber}`,
+        phoneNumber: `+91 ${derivedPhoneNumber}`,
       });
     } else {
       const errorMsg = fetchError || responseData?.message || 'Failed to load user data';
-      console.error('Error fetching user details:', errorMsg);
       setErrors((prev) => ({ ...prev, email: errorMsg }));
-      if (
-        errorMsg.includes('Invalid token') ||
-        errorMsg.includes('User not found')
-      ) {
+      if (errorMsg.includes('Invalid token') || errorMsg.includes('User not found')) {
         localStorage.removeItem('token');
         navigate('/login');
       }
     }
   };
 
-  // Send OTP
-  const handleSendOtp = async () => {
+  const handleBookingsResponse = () => {
+    if (responseData?.success && responseData.data) {
+      setBookings(responseData.data);
+      setErrors((prev) => ({ ...prev, bookings: '' }));
+    } else {
+      const errorMsg = fetchError || responseData?.message || 'Failed to load bookings';
+      setErrors((prev) => ({ ...prev, bookings: errorMsg }));
+    }
+  };
+
+  const handleSendOtp = () => {
     if (!token) {
-      console.error('No token found, redirecting to login');
       navigate('/login');
       return;
     }
@@ -156,7 +169,7 @@ const Profile = () => {
       setOtpMessage('');
       return;
     }
-    const requestConfig = {
+    serverRequest({
       method: 'POST',
       apiUrl: '/api/auth/send-otp',
       apiKey: 'SENDOTP',
@@ -165,24 +178,11 @@ const Profile = () => {
         'Content-Type': 'application/json',
       },
       body: { email: userData.email },
-    };
-    console.log('Sending OTP request:', JSON.stringify(requestConfig, null, 2));
-    try {
-      await serverRequest(requestConfig);
-    } catch (error) {
-      console.error('OTP request error:', error.message);
-      setErrors((prev) => ({
-        ...prev,
-        otp: error.message || 'Request failed. Please check your connection.',
-      }));
-      setOtpMessage('');
-    }
+    });
   };
 
-  // Verify OTP
-  const handleVerifyOtp = async () => {
+  const handleVerifyOtp = () => {
     if (!token) {
-      console.error('No token found, redirecting to login');
       navigate('/login');
       return;
     }
@@ -190,7 +190,7 @@ const Profile = () => {
       setErrors((prev) => ({ ...prev, otp: 'OTP is required' }));
       return;
     }
-    const requestConfig = {
+    serverRequest({
       method: 'POST',
       apiUrl: '/api/auth/verify-otp',
       apiKey: 'VERIFYOTP',
@@ -199,24 +199,11 @@ const Profile = () => {
         'Content-Type': 'application/json',
       },
       body: { email: userData.email, otp: otpState.otp },
-    };
-    console.log('Verifying OTP request:', JSON.stringify(requestConfig, null, 2));
-    try {
-      await serverRequest(requestConfig);
-    } catch (error) {
-      console.error('Verify OTP error:', error.message);
-      setErrors((prev) => ({
-        ...prev,
-        otp: error.message || 'Verification failed. Please try again.',
-      }));
-      setOtpMessage('');
-    }
+    });
   };
 
-  // Save updated field
-  const handleSave = async (field) => {
+  const handleSave = (field) => {
     if (!token) {
-      console.error('No token found, redirecting to login');
       navigate('/login');
       return;
     }
@@ -225,8 +212,8 @@ const Profile = () => {
       validationError = validateFullName(formData.fullName);
     } else if (field === 'email') {
       validationError = validateEmail(formData.email);
-    } else if (field === 'mobileNumber') {
-      validationError = validateMobileNumber(formData.mobileNumber);
+    } else if (field === 'phoneNumber') {
+      validationError = validatePhoneNumber(formData.phoneNumber);
     } else if (field === 'password') {
       validationError = validatePassword(formData.password);
       if (!validationError) {
@@ -256,7 +243,7 @@ const Profile = () => {
       return;
     }
 
-    const requestConfig = {
+    serverRequest({
       method: 'POST',
       apiUrl: '/api/auth/user/update',
       apiKey: 'UPDATEUSER',
@@ -266,29 +253,18 @@ const Profile = () => {
       },
       body: {
         [field]:
-          field === 'mobileNumber'
+          field === 'phoneNumber'
             ? formData[field].replace(/^\+91\s?-?/, '')
             : formData[field],
       },
-    };
-    console.log('Saving field request:', JSON.stringify(requestConfig, null, 2));
-    try {
-      await serverRequest(requestConfig);
-    } catch (error) {
-      console.error('Save error:', error.message);
-      setErrors((prev) => ({
-        ...prev,
-        [field]: error.message || 'Update failed. Please try again.',
-      }));
-    }
+    });
   };
 
-  // Toggle edit mode
   const toggleEdit = (field) => {
     setEditMode((prev) => ({
       fullName: field === 'fullName' ? !prev.fullName : false,
       email: field === 'email' ? !prev.email : false,
-      mobileNumber: field === 'mobileNumber' ? !prev.mobileNumber : false,
+      phoneNumber: field === 'phoneNumber' ? !prev.phoneNumber : false,
       password: field === 'password' ? !prev.password : false,
     }));
     if (editMode[field]) {
@@ -307,8 +283,8 @@ const Profile = () => {
       if (field === 'password') {
         setOtpState({ isOtpSent: false, otp: '', isOtpVerified: false });
       }
-    } else if (field === 'mobileNumber' && !userData.mobileNumber) {
-      setFormData((prev) => ({ ...prev, mobileNumber: '+91 ' }));
+    } else if (field === 'phoneNumber' && !userData.phoneNumber) {
+      setFormData((prev) => ({ ...prev, phoneNumber: '+91 ' }));
     } else if (
       field === 'password' &&
       userData.email &&
@@ -323,7 +299,6 @@ const Profile = () => {
     }
   };
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -333,8 +308,8 @@ const Profile = () => {
       validationError = validateFullName(value);
     } else if (name === 'email') {
       validationError = validateEmail(value);
-    } else if (name === 'mobileNumber') {
-      validationError = validateMobileNumber(value);
+    } else if (name === 'phoneNumber') {
+      validationError = validatePhoneNumber(value);
     } else if (name === 'password') {
       validationError = validatePassword(value);
     } else if (name === 'confirmPassword') {
@@ -347,17 +322,15 @@ const Profile = () => {
     }
   };
 
-  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
 
-  // Check if save button is disabled
   const isSaveDisabled = (field) => {
     if (field === 'fullName' && errors.fullName) return true;
     if (field === 'email' && errors.email) return true;
-    if (field === 'mobileNumber' && errors.mobileNumber) return true;
+    if (field === 'phoneNumber' && errors.phoneNumber) return true;
     if (field === 'password') {
       return errors.password || errors.confirmPassword || !otpState.isOtpVerified;
     }
@@ -370,14 +343,17 @@ const Profile = () => {
       return;
     }
     fetchUserDetails();
+    fetchUserBookings();
   }, [token, navigate]);
 
   useEffect(() => {
     if (!isLoading && apiKey && (responseData || fetchError)) {
-      console.log('useEffect - apiKey:', apiKey, 'responseData:', responseData);
       switch (apiKey) {
         case 'GETUSER':
           handleUserDetailsResponse();
+          break;
+        case 'GET_BOOKINGS':
+          handleBookingsResponse();
           break;
         case 'SENDOTP':
           if (responseData?.sendOtp) {
@@ -390,8 +366,10 @@ const Profile = () => {
             setErrors((prev) => ({ ...prev, otp: '' }));
             setOtpMessage('OTP sent to your email. Check your inbox or spam folder.');
           } else {
-            const errorMsg = fetchError || 'Failed to send OTP. Please try again.';
-            setErrors((prev) => ({ ...prev, otp: errorMsg }));
+            setErrors((prev) => ({
+              ...prev,
+              otp: fetchError || 'Failed to send OTP. Please try again.',
+            }));
             setOtpMessage('');
           }
           break;
@@ -401,8 +379,10 @@ const Profile = () => {
             setErrors((prev) => ({ ...prev, otp: '' }));
             setOtpMessage('OTP verified successfully.');
           } else {
-            const errorMsg = fetchError || 'Invalid or expired OTP';
-            setErrors((prev) => ({ ...prev, otp: errorMsg }));
+            setErrors((prev) => ({
+              ...prev,
+              otp: fetchError || 'Invalid or expired OTP',
+            }));
             setOtpMessage('');
           }
           break;
@@ -412,16 +392,16 @@ const Profile = () => {
               ...prev,
               fullName: responseData.fullName,
               email: responseData.email,
-              mobileNumber: responseData.mobileNumber
-                ? `+91 ${responseData.mobileNumber}`
+              phoneNumber: responseData.phoneNumber
+                ? `+91 ${responseData.phoneNumber}`
                 : `+91 1234567890`,
             }));
             setFormData((prev) => ({
               ...prev,
               fullName: responseData.fullName,
               email: responseData.email,
-              mobileNumber: responseData.mobileNumber
-                ? `+91 ${responseData.mobileNumber}`
+              phoneNumber: responseData.phoneNumber
+                ? `+91 ${responseData.phoneNumber}`
                 : `+91 1234567890`,
               password: '',
               confirmPassword: '',
@@ -438,11 +418,11 @@ const Profile = () => {
               setOtpState({ isOtpSent: false, otp: '', isOtpVerified: false });
             }
           } else {
-            const errorMsg = fetchError || 'Failed to update. Please try again.';
-            setErrors((prev) => ({ ...prev, [responseData.field]: errorMsg }));
+            setErrors((prev) => ({
+              ...prev,
+              [responseData.field]: fetchError || 'Failed to update. Please try again.',
+            }));
           }
-          break;
-        default:
           break;
       }
     }
@@ -456,7 +436,6 @@ const Profile = () => {
           <h2 className="section-title">Personal Information</h2>
           {isLoading && apiKey === 'GETUSER' && <p>Loading profile...</p>}
           <div className="profile-details">
-            {/* Full Name */}
             <div className="field-group">
               <label className="profile-label">Full Name</label>
               <input
@@ -481,7 +460,6 @@ const Profile = () => {
               </button>
             </div>
 
-            {/* Email */}
             <div className="field-group">
               <label className="profile-label">Email</label>
               <input
@@ -504,32 +482,30 @@ const Profile = () => {
               </button>
             </div>
 
-            {/* Mobile Number */}
             <div className="field-group">
               <label className="profile-label">Phone Number</label>
               <input
                 type="tel"
-                name="mobileNumber"
-                className={`profile-input ${errors.mobileNumber ? 'input-error' : ''}`}
+                name="phoneNumber"
+                className={`profile-input ${errors.phoneNumber ? 'input-error' : ''}`}
                 placeholder={isLoading ? 'Loading...' : '+91 1234567890'}
-                value={formData.mobileNumber}
+                value={formData.phoneNumber}
                 onChange={handleInputChange}
-                disabled={!editMode.mobileNumber}
+                disabled={!editMode.phoneNumber}
               />
-              {errors.mobileNumber && <p className="error-text">{errors.mobileNumber}</p>}
+              {errors.phoneNumber && <p className="error-text">{errors.phoneNumber}</p>}
               <button
                 className="btn-edit-profile"
                 onClick={() =>
-                  editMode.mobileNumber ? handleSave('mobileNumber') : toggleEdit('mobileNumber')
+                  editMode.phoneNumber ? handleSave('phoneNumber') : toggleEdit('phoneNumber')
                 }
-                disabled={editMode.mobileNumber && isSaveDisabled('mobileNumber')}
+                disabled={editMode.phoneNumber && isSaveDisabled('phoneNumber')}
               >
-                {editMode.mobileNumber ? <FiSave /> : <FaRegEdit />}
-                {editMode.mobileNumber ? 'Save' : 'Edit'}
+                {editMode.phoneNumber ? <FaSave /> : <FaRegEdit />}
+                {editMode.phoneNumber ? 'Save' : 'Edit'}
               </button>
             </div>
 
-            {/* Password */}
             <div className="field-group">
               <label className="profile-label">Password</label>
               {!otpMessage && (
@@ -587,7 +563,7 @@ const Profile = () => {
                     onClick={() => handleSave('password')}
                     disabled={isSaveDisabled('password')}
                   >
-                    <FiSave />
+                    <FaSave />
                     Save
                   </button>
                 </>
@@ -602,14 +578,37 @@ const Profile = () => {
                 </button>
               )}
             </div>
-
-            {/* Logout */}
-            <div className="profile-actions">
-              <button onClick={handleLogout} className="logout-btn">
-                Logout
-              </button>
-            </div>
           </div>
+        </div>
+
+        <div className="profile-info">
+          <h2 className="section-title">Your Bookings</h2>
+          {isLoading && apiKey === 'GET_BOOKINGS' && <p>Loading bookings...</p>}
+          {errors.bookings && <p className="error-text">{errors.bookings}</p>}
+          {bookings.length === 0 && !isLoading && !errors.bookings && (
+            <p>No bookings found.</p>
+          )}
+          {bookings.length > 0 && (
+            <div className="bookings-list">
+              {bookings.map((booking) => (
+                <div key={booking.ticketId} className="booking-card">
+                  <h3>{booking.movieName}</h3>
+                  <p><strong>Theater:</strong> {booking.theaterName}</p>
+                  <p><strong>Screen:</strong> {booking.screenNumber}</p>
+                  <p><strong>Showtime:</strong> {new Date(booking.showtime).toLocaleString()}</p>
+                  <p><strong>Seats:</strong> {booking.seats.map(s => s.seatNumber).join(', ')}</p>
+                  <p><strong>Total Price:</strong> ₹{booking.totalPrice}</p>
+                  <p><strong>Ticket ID:</strong> {booking.ticketId}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="profile-actions">
+          <button onClick={handleLogout} className="logout-btn">
+            Logout
+          </button>
         </div>
       </div>
     </div>

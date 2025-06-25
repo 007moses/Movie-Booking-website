@@ -21,7 +21,7 @@ app.use(cors({
 }));
 
 // Mount routes
-// app.use('/api/auth', authRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/bookings', bookingRouter);
 
 // Error handling middleware`

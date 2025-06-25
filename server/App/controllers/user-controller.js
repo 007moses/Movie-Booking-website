@@ -1,9 +1,9 @@
-import User from '../models/User-model.js';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
 import asyncHandler from 'express-async-handler';
 import generateToken from '../../utility/generateToken.js';
+import User from '../models/User-model.js';
 
 dotenv.config();
 
