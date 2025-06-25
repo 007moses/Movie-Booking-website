@@ -9,7 +9,7 @@ userRouter.post('/login', loginUser);
 userRouter.post('/forgot-password', forgotPassword);
 userRouter.post('/reset-password/:token', resetPassword);
 userRouter.get('/profile', protect, getUserDetails);
-userRouter.put('/profile', protect, updateUserDetails);
+userRouter.put('/update', protect, updateUserDetails);
 userRouter.post('/send-otp', sendOtp);
 userRouter.post('/verify-otp', verifyOtp);
 

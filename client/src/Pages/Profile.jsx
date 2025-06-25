@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UseApiFetch from '../API-Method/UseApiFetch';
 import { FaRegEdit, FaSave } from 'react-icons/fa';
@@ -7,7 +7,6 @@ import '../Styles/Profile.css';
 const Profile = () => {
   const navigate = useNavigate();
   const { isLoading, errorMessage: fetchError, responseData, apiKey, serverRequest } = UseApiFetch();
-
   const [userData, setUserData] = useState({
     fullName: '',
     email: '',
@@ -42,6 +41,15 @@ const Profile = () => {
   });
   const [otpMessage, setOtpMessage] = useState('');
   const [bookings, setBookings] = useState([]);
+  const [isBookingsOpen, setIsBookingsOpen] = useState(false);
+
+  // Refs for input fields to focus
+  const fullNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const phoneNumberRef = useRef(null);
+  const passwordRef = useRef(null);
+  const otpRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
 
   const token = localStorage.getItem('token');
 
@@ -120,9 +128,9 @@ const Profile = () => {
 
   const handleUserDetailsResponse = () => {
     if (responseData?.success && responseData.data) {
-      const { name, email, phoneNumber } = responseData.data;
+      const { name, email, mobileNumber } = responseData.data;
       const derivedFullName = name || (email ? email.split('@')[0] : 'User');
-      const derivedPhoneNumber = phoneNumber || '1234567890';
+      const derivedPhoneNumber = mobileNumber || '1234567890';
       const newUserData = {
         fullName: derivedFullName,
         email,
@@ -244,15 +252,15 @@ const Profile = () => {
     }
 
     serverRequest({
-      method: 'POST',
-      apiUrl: '/api/auth/user/update',
+      method: 'PUT', // Changed to PUT to match backend route
+      apiUrl: '/api/auth/update',
       apiKey: 'UPDATEUSER',
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: {
-        [field]:
+        [field === 'phoneNumber' ? 'mobileNumber' : field]:
           field === 'phoneNumber'
             ? formData[field].replace(/^\+91\s?-?/, '')
             : formData[field],
@@ -283,19 +291,25 @@ const Profile = () => {
       if (field === 'password') {
         setOtpState({ isOtpSent: false, otp: '', isOtpVerified: false });
       }
-    } else if (field === 'phoneNumber' && !userData.phoneNumber) {
-      setFormData((prev) => ({ ...prev, phoneNumber: '+91 ' }));
-    } else if (
-      field === 'password' &&
-      userData.email &&
-      !validateEmail(userData.email)
-    ) {
-      handleSendOtp();
-    } else if (field === 'password' && !userData.email) {
-      setErrors((prev) => ({
-        ...prev,
-        otp: 'User email not loaded. Please try again.',
-      }));
+    } else {
+      // Focus the corresponding input field
+      if (field === 'fullName') fullNameRef.current?.focus();
+      else if (field === 'email') emailRef.current?.focus();
+      else if (field === 'phoneNumber') {
+        if (!userData.phoneNumber) {
+          setFormData((prev) => ({ ...prev, phoneNumber: '+91 ' }));
+        }
+        phoneNumberRef.current?.focus();
+      } else if (field === 'password') {
+        if (userData.email && !validateEmail(userData.email)) {
+          handleSendOtp();
+        } else if (!userData.email) {
+          setErrors((prev) => ({
+            ...prev,
+            otp: 'User email not loaded. Please try again.',
+          }));
+        }
+      }
     }
   };
 
@@ -337,13 +351,29 @@ const Profile = () => {
     return false;
   };
 
+  const toggleBookingsDropdown = () => {
+    if (!isBookingsOpen) {
+      fetchUserBookings();
+    }
+    setIsBookingsOpen(!isBookingsOpen);
+  };
+
+  // Auto-focus OTP and confirmPassword inputs when they appear
+  useEffect(() => {
+    if (otpState.isOtpSent && !otpState.isOtpVerified) {
+      otpRef.current?.focus();
+    }
+    if (otpState.isOtpVerified && editMode.password) {
+      passwordRef.current?.focus();
+    }
+  }, [otpState.isOtpSent, otpState.isOtpVerified, editMode.password]);
+
   useEffect(() => {
     if (!token) {
       navigate('/login');
       return;
     }
     fetchUserDetails();
-    fetchUserBookings();
   }, [token, navigate]);
 
   useEffect(() => {
@@ -387,40 +417,40 @@ const Profile = () => {
           }
           break;
         case 'UPDATEUSER':
-          if (responseData?._id) {
-            setUserData((prev) => ({
-              ...prev,
+          if (responseData?.update && responseData._id) {
+            const newUserData = {
               fullName: responseData.fullName,
               email: responseData.email,
-              phoneNumber: responseData.phoneNumber
-                ? `+91 ${responseData.phoneNumber}`
+              phoneNumber: responseData.mobileNumber
+                ? `+91 ${responseData.mobileNumber}`
                 : `+91 1234567890`,
-            }));
+            };
+            setUserData(newUserData);
             setFormData((prev) => ({
               ...prev,
-              fullName: responseData.fullName,
-              email: responseData.email,
-              phoneNumber: responseData.phoneNumber
-                ? `+91 ${responseData.phoneNumber}`
-                : `+91 1234567890`,
+              ...newUserData,
               password: '',
               confirmPassword: '',
             }));
-            setEditMode((prev) => ({ ...prev, [responseData.field]: false }));
+            setEditMode((prev) => ({
+              ...prev,
+              [responseData.mobileNumber ? 'phoneNumber' : responseData.field]: false,
+            }));
             setErrors((prev) => ({
               ...prev,
-              [responseData.field]: '',
+              [responseData.mobileNumber ? 'phoneNumber' : responseData.field]: '',
               confirmPassword: '',
               otp: '',
             }));
             setOtpMessage('');
-            if (responseData.field === 'password') {
+            if (responseData.field === 'password' || responseData.password) {
               setOtpState({ isOtpSent: false, otp: '', isOtpVerified: false });
             }
           } else {
             setErrors((prev) => ({
               ...prev,
-              [responseData.field]: fetchError || 'Failed to update. Please try again.',
+              [responseData.mobileNumber ? 'phoneNumber' : responseData.field || 'email']:
+                fetchError || responseData?.message || 'Failed to update. Please try again.',
             }));
           }
           break;
@@ -446,6 +476,7 @@ const Profile = () => {
                 value={formData.fullName}
                 onChange={handleInputChange}
                 disabled={!editMode.fullName}
+                ref={fullNameRef}
               />
               {errors.fullName && <p className="error-text">{errors.fullName}</p>}
               <button
@@ -470,6 +501,7 @@ const Profile = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 disabled={!editMode.email}
+                ref={emailRef}
               />
               {errors.email && <p className="error-text">{errors.email}</p>}
               <button
@@ -492,6 +524,7 @@ const Profile = () => {
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
                 disabled={!editMode.phoneNumber}
+                ref={phoneNumberRef}
               />
               {errors.phoneNumber && <p className="error-text">{errors.phoneNumber}</p>}
               <button
@@ -517,6 +550,7 @@ const Profile = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   disabled={!editMode.password}
+                  ref={passwordRef}
                 />
               )}
               {otpMessage && <p className="success-text">{otpMessage}</p>}
@@ -530,6 +564,7 @@ const Profile = () => {
                     placeholder="Enter OTP"
                     value={otpState.otp}
                     onChange={handleInputChange}
+                    ref={otpRef}
                   />
                   <button className="btn-edit-profile" onClick={handleVerifyOtp}>
                     Verify OTP
@@ -545,6 +580,7 @@ const Profile = () => {
                     placeholder="Enter new password"
                     value={formData.password}
                     onChange={handleInputChange}
+                    ref={passwordRef}
                   />
                   {errors.password && <p className="error-text">{errors.password}</p>}
                   <input
@@ -554,6 +590,7 @@ const Profile = () => {
                     placeholder="Confirm new password"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
+                    ref={confirmPasswordRef}
                   />
                   {errors.confirmPassword && (
                     <p className="error-text">{errors.confirmPassword}</p>
@@ -583,26 +620,34 @@ const Profile = () => {
 
         <div className="profile-info">
           <h2 className="section-title">Your Bookings</h2>
-          {isLoading && apiKey === 'GET_BOOKINGS' && <p>Loading bookings...</p>}
-          {errors.bookings && <p className="error-text">{errors.bookings}</p>}
-          {bookings.length === 0 && !isLoading && !errors.bookings && (
-            <p>No bookings found.</p>
-          )}
-          {bookings.length > 0 && (
-            <div className="bookings-list">
-              {bookings.map((booking) => (
-                <div key={booking.ticketId} className="booking-card">
-                  <h3>{booking.movieName}</h3>
-                  <p><strong>Theater:</strong> {booking.theaterName}</p>
-                  <p><strong>Screen:</strong> {booking.screenNumber}</p>
-                  <p><strong>Showtime:</strong> {new Date(booking.showtime).toLocaleString()}</p>
-                  <p><strong>Seats:</strong> {booking.seats.map(s => s.seatNumber).join(', ')}</p>
-                  <p><strong>Total Price:</strong> ₹{booking.totalPrice}</p>
-                  <p><strong>Ticket ID:</strong> {booking.ticketId}</p>
-                </div>
-              ))}
-            </div>
-          )}
+          <button
+            className="show-bookings-btn"
+            onClick={toggleBookingsDropdown}
+          >
+            {isBookingsOpen ? 'Hide Bookings' : 'Show Bookings'}
+          </button>
+          <div className={`bookings-dropdown ${isBookingsOpen ? 'open' : ''}`}>
+            {isLoading && apiKey === 'GET_BOOKINGS' && <p>Loading bookings...</p>}
+            {errors.bookings && <p className="error-text">{errors.bookings}</p>}
+            {bookings.length === 0 && !isLoading && !errors.bookings && (
+              <p>No bookings found.</p>
+            )}
+            {bookings.length > 0 && (
+              <div className="bookings-list">
+                {bookings.map((booking) => (
+                  <div key={booking.ticketId} className="booking-card">
+                    <h3>{booking.movieName}</h3>
+                    <p><strong>Theater:</strong> {booking.theaterName}</p>
+                    <p><strong>Screen:</strong> {booking.screenNumber}</p>
+                    <p><strong>Showtime:</strong> {new Date(booking.showtime).toLocaleString()}</p>
+                    <p><strong>Seats:</strong> {booking.seats.map(s => s.seatNumber).join(', ')}</p>
+                    <p><strong>Total Price:</strong> ₹{booking.totalPrice}</p>
+                    <p><strong>Ticket ID:</strong> {booking.ticketId}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="profile-actions">
