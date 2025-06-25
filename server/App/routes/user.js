@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { registerUser, loginUser, forgotPassword, resetPassword, getUserDetails, updateUserDetails, sendOtp, verifyOtp } from '../controllers/user-controller.js';
 import protect from '../../middleware/auth-middleware.js';
-import { Router } from 'express';
 
 const userRouter = Router();
 

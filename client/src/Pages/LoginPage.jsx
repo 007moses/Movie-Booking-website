@@ -50,8 +50,8 @@ const Login = () => {
 
   const fnScreenLoadRequestLogin = () => {
     const obj_loginParams = {
-      email: loginData.email,
-      password: loginData.password,
+      email: loginData?.email,
+      password: loginData?.password,
     };
 
     console.log(obj_loginParams);
@@ -73,14 +73,16 @@ const Login = () => {
     let IsAuth = responseData.login;
     if (IsAuth === true) {
       navigate("/");
-      localStorage.setItem("token", responseData?.token);
-      console.log(responseData?.token,"token")
+      localStorage.setItem("token", responseData.token);
+      console.log(responseData.token,"token")
       // console.log(responseData?.token, "UserID");
     } else {
       setReRender(!reRender);
       navigate("/login");
     }
   };
+
+  console.log(localStorage.getItem('token'))
 
   useEffect(() => {
     if (!isLoading && apiKey === "LOGIN" && responseData) {

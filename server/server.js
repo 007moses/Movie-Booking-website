@@ -1,12 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import MoviesRouter from './App/routes/movie.js';
-import bookingRouter from './App/routes/booking.js';
-// import ScreensRouter from './App/routes/screen.js';
-import theaterRouter from './App/routes/theaters.js';
 import connectDB from './config/mongoDbConn.js';
 import cors from 'cors';
 import authRouter from './App/routes/user.js';
+import bookingRouter from './App/routes/booking.js';
 
 // Load environment variables
 dotenv.config();
@@ -24,13 +21,10 @@ app.use(cors({
 }));
 
 // Mount routes
-app.use('/api/movies', MoviesRouter);
-app.use('/api/auth', authRouter);
+// app.use('/api/auth', authRouter);
 app.use('/api/bookings', bookingRouter);
-// app.use('/api/screens', ScreensRouter);
-app.use('/api/theaters', theaterRouter);
 
-// Error handling middleware
+// Error handling middleware`
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({
