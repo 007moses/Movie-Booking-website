@@ -81,7 +81,7 @@ const UseApiFetch = () => {
     const [fetchError, setFetchError] = useState(null);
     const [apiKey, setApiKey] = useState(null);
 
-    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+    const baseUrl = import.meta.env.VITE_API_URL 
     console.log('Base URL:', baseUrl);
 
     function serverRequest(serverRequestParam) {
