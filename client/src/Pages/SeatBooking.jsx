@@ -172,7 +172,7 @@ const SeatBooking = () => {
         </select>
       </div>
 
-      {error && <p className="error-message">{error}</p>}
+      {/* {error && <p className="error-message">{error}</p>} */}
       {isLoading && <p>Loading...</p>}
 
       <div className="seat-map">
