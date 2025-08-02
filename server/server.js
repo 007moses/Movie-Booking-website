@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Enable CORS for your frontend origin
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173',"https://moviesmagicda.netlify.app"],
   credentials: true // if you are using cookies or sessions
 }));
 
