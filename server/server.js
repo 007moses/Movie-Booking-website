@@ -18,18 +18,14 @@ app.use(express.json());
 app.use(
   cors({
     origin: (origin, callback) => {
-      const allowedOrigins = [
-        "http://localhost:5173",
-        "https://moviesmagicdaa.netlify.app",
-        "https://gilded-profiterole-6eae59.netlify.app",
-      ];
-
+      const allowedOrigins = ["https://moviesmagicdaa.netlify.app"];
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
       }
     },
+
     credentials: true,
   })
 );
