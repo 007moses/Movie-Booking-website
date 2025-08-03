@@ -17,8 +17,7 @@ app.use(express.json());
 // Enable CORS for your frontend origin
 app.use(cors({
   origin: (origin, callback) => {
-    const allowedOrigins = [
-      'http://localhost:5173',
+    const allowedOrigins = [      
       'https://moviesmagicdaa.netlify.app'
     ];
     if (!origin || allowedOrigins.includes(origin)) {
