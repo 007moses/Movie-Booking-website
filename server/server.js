@@ -1,9 +1,9 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import connectDB from './config/mongoDbConn.js';
-import cors from 'cors';
-import authRouter from './App/routes/user.js';
-import bookingRouter from './App/routes/booking.js';
+import express from "express";
+import dotenv from "dotenv";
+import connectDB from "./config/mongoDbConn.js";
+import cors from "cors";
+import authRouter from "./App/routes/user.js";
+import bookingRouter from "./App/routes/booking.js";
 
 // Load environment variables
 dotenv.config();
@@ -15,31 +15,35 @@ const app = express();
 app.use(express.json());
 
 // Enable CORS for your frontend origin
-app.use(cors({
-  origin: (origin, callback) => {
-    const allowedOrigins = [      
-      'https://moviesmagicdaa.netlify.app'
-    ];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        "http://localhost:5173",
+        "https://moviesmagicdaa.netlify.app",
+        "https://gilded-profiterole-6eae59.netlify.app",
+      ];
 
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 // Mount routes
-app.use('/api/auth', authRouter);
-app.use('/api/bookings', bookingRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/bookings", bookingRouter);
 
 // Error handling middleware`
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({
     success: false,
-    message: err.message || 'Server Error',
+    message: err.message || "Server Error",
   });
 });
 
